@@ -1,0 +1,9 @@
+Fundamental of Networks
+OSI =Open System Interconnectin
+for communiting with each other
+
+There is 7 level of OSI model
+Layer 1 physical is cables, wi-fi, hub, modem
+Layer 2 is Switch, is data link layer
+Layer 3 is network layer Multilayer switch and most importantly Router. Router can communicates with local and non local networks.
+Layer for is security

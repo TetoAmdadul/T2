@@ -1,4 +1,5 @@
->keyboard ShortCuts  
+keyboard ShortCuts
+> for 	  
 >for copy paste (using command + shift + c,x,v)
 >for Screenshot (using Cmd + shift + 4)
  for(Option (⌥) + 8  → {
