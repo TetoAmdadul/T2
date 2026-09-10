@@ -41,3 +41,28 @@ Example: print("Total:", round(total, 2))
 
 ### Status
 Day 1 completed
+## Day 2 - Lists and Loops
+
+### Code Review
+
+- `sales = [...]` → **List**
+- `sales[3]` → **Index access**
+- `for sale in sales:` → **For loop / iteration**
+- `if sale > 1000:` → **Conditional statement**
+- `sum(sales)` → **Built-in function call**
+- `sales.append(7000)` → **Method call**
+- `print(sum(sales))` → **Nested function call**
+- `print(sales.pop(2))` → **Nested method call**
+- `"Total sales:"` → **String literal**
+- `total_sales = sum(sales)` → **Assignment statement**
+- `sales` in `sum(sales)` → **Argument**
+
+### What I Practiced
+
+- Total, average, highest and lowest sales
+- Counting values with `for` + `if`
+- Adding, removing and updating list items
+- Using indexes
+- Formatting numeric output
+
+**Day 2 completed 
