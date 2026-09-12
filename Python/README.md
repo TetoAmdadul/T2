@@ -417,3 +417,348 @@ Data cleaning and analysis
         ↓
 Business reports and dashboards
 ```
+## Day 4 — Python Functions
+
+### What I Learned
+
+- What a function is
+- How to define a function using `def`
+- How to call a function
+- Parameters and arguments
+- Functions with multiple parameters
+- Built-in functions vs user-defined functions
+- `print()` vs `return`
+- Return values
+- Local variables and scope
+- Using functions with dictionaries
+- Using functions together with `for` loops
+
+---
+
+### Why Functions?
+
+Functions help organize reusable and meaningful logic.
+
+Instead of repeating:
+
+```python
+inventory_value = price * quantity
+```
+
+the calculation can be given a clear name:
+
+```python
+def calculate_inventory(price, quantity):
+    result = price * quantity
+    return result
+```
+
+This makes code easier to reuse, change, test, and understand.
+
+---
+
+### Main Syntax
+
+#### Function Definition
+
+```python
+def function_name():
+    statement
+```
+
+#### Function Call
+
+```python
+function_name()
+```
+
+#### Function with Parameters
+
+```python
+def function_name(parameter):
+    statement
+```
+
+#### Function with Multiple Parameters
+
+```python
+def calculate_inventory(price, quantity):
+    result = price * quantity
+    return result
+```
+
+#### Calling the Function
+
+```python
+calculate_inventory(2000, 10)
+```
+
+Here:
+
+- `price`, `quantity` → Parameters
+- `2000`, `10` → Arguments
+
+---
+
+### `print()` vs `return`
+
+```python
+def calculate_inventory(price, quantity):
+    result = price * quantity
+    print(result)
+```
+
+`print()` displays the value.
+
+```python
+def calculate_inventory(price, quantity):
+    result = price * quantity
+    return result
+```
+
+`return` sends the value back to the caller so it can be reused.
+
+Example:
+
+```python
+inventory_value = calculate_inventory(2000, 10)
+print(inventory_value)
+```
+
+---
+
+### Function + List of Dictionaries
+
+For one specific dictionary:
+
+```python
+inventory_value = calculate_inventory(
+    products[0]["price"],
+    products[0]["quantity"]
+)
+
+print(inventory_value)
+```
+
+For every dictionary:
+
+```python
+for item in products:
+    inventory_value = calculate_inventory(
+        item["price"],
+        item["quantity"]
+    )
+
+    print(item["product_name"], inventory_value)
+```
+
+Connection:
+
+```text
+for loop
+→ handles repetition
+
+function
+→ handles reusable calculation logic
+```
+
+---
+
+### Scope
+
+A variable created inside a function is normally a local variable.
+
+```python
+def calculate_inventory(price, quantity):
+    result = price * quantity
+    return result
+```
+
+Here:
+
+```python
+result
+```
+
+is a local variable.
+
+Trying to access it directly outside the function can cause:
+
+```text
+NameError: name 'result' is not defined
+```
+
+`return` sends the value outside the function. It does not move the local variable itself outside.
+
+---
+
+## Key Programming Terms
+
+- Function
+- Function definition
+- Function call
+- Built-in function
+- User-defined function
+- Parameter
+- Argument
+- Statement
+- Expression
+- Return statement
+- Return value
+- Local variable
+- Local scope
+- Scope
+- Nested function call
+
+---
+
+## Code Review
+
+```python
+def calculate_inventory(price, quantity):
+```
+
+→ Function definition with two parameters
+
+```python
+price
+quantity
+```
+
+→ Parameters
+
+```python
+result = price * quantity
+```
+
+→ Assignment statement with arithmetic expression
+
+```python
+return result
+```
+
+→ Return statement
+
+```python
+calculate_inventory(2000, 10)
+```
+
+→ Function call
+
+```python
+2000, 10
+```
+
+→ Arguments
+
+```python
+inventory_value = calculate_inventory(2000, 10)
+```
+
+→ Assignment receiving a return value
+
+```python
+print(calculate_inventory(500, 3))
+```
+
+→ Nested function call
+
+```python
+for item in products:
+```
+
+→ Iteration
+
+```python
+calculate_inventory(
+    item["price"],
+    item["quantity"]
+)
+```
+
+→ Function call using dictionary values as arguments
+
+---
+
+## Interview Quick Q&A — My Day 4 Questions
+
+**Q: What is a function?**  
+A: A function is a reusable block of code designed to perform a specific task.
+
+**Q: What is a parameter?**  
+A: A parameter is a variable in a function definition that receives input.
+
+**Q: What is an argument?**  
+A: An argument is the actual value passed to a function when it is called.
+
+**Q: What is a statement?**  
+A: A statement is an instruction that tells Python to perform an action.
+
+**Q: What is the difference between a parameter and an argument?**  
+A: A parameter is defined in the function; an argument is the actual value supplied when calling it.
+
+**Q: Is `print()` a function?**  
+A: Yes. `print()` is a built-in Python function.
+
+**Q: What is a user-defined function?**  
+A: A function created by the programmer using `def`.
+
+**Q: Why should I not create my own function named `print`?**  
+A: It would shadow Python's built-in `print()` function.
+
+**Q: Why use `return` instead of only `print()`?**  
+A: `print()` displays a value, while `return` sends a value back so it can be reused elsewhere.
+
+**Q: Can I write `print(calculate_inventory(500, 3))`?**  
+A: Yes. The inner function returns a value, and `print()` displays that returned value.
+
+**Q: When should I use a function and when should I use a `for` loop?**  
+A: Use a `for` loop for repetition. Use a function to organize and reuse specific logic. They can also be used together.
+
+**Q: Why do `price` and `quantity` appear both in the function and in the loop?**  
+A: Inside the function they are parameters. In the function call, dictionary values are passed as arguments to those parameters.
+
+**Q: What is scope?**  
+A: Scope determines where a variable can be accessed in a program.
+
+**Q: What is a local variable?**  
+A: A local variable is created inside a function and is normally accessible only inside that function.
+
+**Q: Does `return` make a local variable available outside the function?**  
+A: No. It returns the variable's value, not the local variable itself.
+
+**Q: Why is scope useful?**  
+A: Scope prevents variable conflicts and helps keep functions independent and easier to debug.
+
+---
+
+## Day 4 Result
+
+I can now:
+
+- Define and call functions
+- Pass values using parameters and arguments
+- Return calculated values
+- Understand the difference between `print()` and `return`
+- Understand local variables and scope
+- Use dictionary values as function arguments
+- Combine functions with `for` loops
+- Separate reusable business logic from repetition
+
+### Connection to Future Learning
+
+```text
+Functions
+    ↓
+Reusable business logic
+    ↓
+Data cleaning functions
+    ↓
+File processing
+    ↓
+CSV processing
+    ↓
+Larger Python programs
+    ↓
+Testing and automation
+```

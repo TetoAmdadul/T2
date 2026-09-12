@@ -26,3 +26,24 @@ for item in products:
        low_stock = low_stock + 1
 
 print("Number of low-stock product is:",low_stock)
+
+
+def calculate_inventory(price, quantity):
+    result = price * quantity
+    return result
+
+#one dictionary from the dictionaries list
+
+inventory_value = calculate_inventory(products[0]["price"], products[0]["quantity"])
+print(inventory_value) 
+
+#Every dictionaries in the list
+for item in products:
+    inventory_value = calculate_inventory(
+        item["price"],
+        item["quantity"]
+    )
+    print(item["product_name"], inventory_value)
+
+
+
