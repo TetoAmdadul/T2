@@ -1,515 +1,413 @@
 # Python Learning & Portfolio Journey
 
-This repository documents my hands-on Python learning journey and portfolio development.
+# Day 5 — Nested Data, Nested Loops, Functions & Customer Analysis
 
+## 1. What Did I Learn Today?
 
-## Day 1 - Python Fundamentals & Debugging
+I learned:
 
-### What I Practiced
-- Variables and data types
-- User input with `input()`
-- Type conversion using `int()` and `float()`
-- Basic calculations
-- `if / else` conditions
-- f-string formatting
-- `round()`
+- Nested data structures
+- List of dictionaries
+- Lists inside dictionaries
+- Nested loops
+- Outer loop and inner loop
+- Dictionary key access
+- `.values()`
+- `.items()`
+- Key-value unpacking
+- Functions with dictionaries
+- Accumulators
+- Counters
+- `return`
+- REPL vs `.py` files
 
-### Mini Exercise
-Built a simple sales calculator that:
-- Accepts product name, price, and quantity
-- Calculates subtotal
-- Applies a discount based on order value
-- Calculates tax
-- Displays the final total
+### Nested Data Structure
 
-### Debugging Experience
-I encountered and fixed:
-- `NameError` - incorrect or undefined variable names
-- `SyntaxError` - incorrect Python syntax
-- `IndentationError` - incorrect indentation
-Syntax: print("Text:", variable)
-Example: print("Total:", total)
-Syntax: print(f"Text: {variable:.2f}")
-Example: print(f"Total: {total:.2f}")
-Syntax: print("Text:", round(variable, 2))
-Example: print("Total:", round(total, 2))
-
-### Code Review Lessons
-- Use clear and consistent variable names
-- Avoid repeating calculations
-- Reuse variables such as `tax_rate`
-- Keep business logic easy to read
-
-### Status
-Day 1 completed
-## Day 2 - Lists and Loops
-
-### Code Review
-
-- `sales = [...]` → **List**
-- `sales[3]` → **Index access**
-- `for sale in sales:` → **For loop / iteration**
-- `if sale > 1000:` → **Conditional statement**
-- `sum(sales)` → **Built-in function call**
-- `sales.append(7000)` → **Method call**
-- `print(sum(sales))` → **Nested function call**
-- `print(sales.pop(2))` → **Nested method call**
-- `"Total sales:"` → **String literal**
-- `total_sales = sum(sales)` → **Assignment statement**
-- `sales` in `sum(sales)` → **Argument**
-
-### What I Practiced
-
-- Total, average, highest and lowest sales
-- Counting values with `for` + `if`
-- Adding, removing and updating list items
-- Using indexes
-- Formatting numeric output
-
-**Day 2 completed 
-
-# Python Learning & Portfolio Journey
-
-## Day 3 — Dictionaries & Warehouse Inventory Analysis
-
-### What I Did
-
-- Learned Python dictionaries and key-value pairs
-- Accessed and updated dictionary values
-- Added new key-value pairs
-- Used the `.items()` dictionary method
-- Learned key-value unpacking
-- Created a list of dictionaries
-- Looped through multiple product records
-- Calculated inventory value using `price × quantity`
-- Calculated total warehouse inventory value
-- Used initialization and an accumulator
-- Used `for` + `if` to detect low-stock products
-- Used a counter to count low-stock products
-- Practiced debugging indentation errors
-
----
-
-### Why This Matters
-
-A dictionary can represent one structured business record.
+Nested data means one data structure is stored inside another.
 
 ```python
-product = {
-    "product_name": "Laptop",
-    "price": 2000,
-    "quantity": 10
+customer = {
+    "name": "Mika",
+    "city": "Espoo",
+    "orders": [500, 1800, 700]
 }
 ```
 
-A list of dictionaries can represent multiple business records.
+Here:
 
 ```python
-products = [
-    {"product_name": "Laptop", "price": 2000, "quantity": 10},
-    {"product_name": "Mouse", "price": 20, "quantity": 10}
-]
+customer["orders"]
 ```
 
-This connects later to:
+returns a list stored inside the dictionary.
 
-- CSV
-- JSON
-- SQL tables
-- APIs
-- Data analysis
-- Business reporting
+### Nested Loop
 
----
-
-### Main Syntax
-
-#### Dictionary
+A nested loop is a loop inside another loop.
 
 ```python
-product = {
-    "product_name": "Laptop",
-    "price": 2000,
-    "quantity": 10
-}
+for customer in customers:
+    for order in customer["orders"]:
+        print(order)
 ```
 
-#### Dictionary Key Lookup
+### `.items()`
+
+`.items()` is used when both dictionary keys and values are needed.
 
 ```python
-product["price"]
-```
-
-#### Update a Value
-
-```python
-product["price"] = 2200
-```
-
-#### Add a New Key-Value Pair
-
-```python
-product["category"] = "Computer"
-```
-
-#### Dictionary `.items()`
-
-```python
-for key, value in product.items():
+for key, value in customer.items():
     print(key, value)
 ```
 
-#### Loop Through a List of Dictionaries
+### Accumulator
+
+An accumulator builds a running value.
 
 ```python
-for item in products:
-    print(item["product_name"])
+total = 0
+total = total + order
 ```
 
-#### Inventory Value
+### Counter
+
+A counter counts how many times something happens.
 
 ```python
-result = item["price"] * item["quantity"]
+high_value_count = 0
+high_value_count = high_value_count + 1
 ```
 
-#### Accumulator
+### `return`
 
-```python
-total_inventory_value = 0
-
-for item in products:
-    result = item["price"] * item["quantity"]
-    total_inventory_value = total_inventory_value + result
-```
-
-#### Condition Inside a Loop
-
-```python
-for item in products:
-    if item["quantity"] <= 5:
-        print(item["product_name"], "is low in stock")
-```
-
-#### Counter
-
-```python
-low_stock = 0
-
-for item in products:
-    if item["quantity"] <= 5:
-        low_stock = low_stock + 1
-```
+`return` sends a value calculated inside a function back to the caller.
 
 ---
 
-## Day 3 Mini Project — Warehouse Inventory Analysis
+## 2. What Did I Do Today?
+
+I created customer data using a list of dictionaries:
 
 ```python
-products = [
-    {"product_name": "Laptop", "price": 2000, "quantity": 10},
-    {"product_name": "Mouse", "price": 20, "quantity": 10},
-    {"product_name": "Keyboard", "price": 200, "quantity": 2},
-    {"product_name": "Ram", "price": 250, "quantity": 5},
-    {"product_name": "SSD", "price": 400, "quantity": 10},
-    {"product_name": "Monitor", "price": 300, "quantity": 90}
+customers = [
+    {"name": "Amina", "city": "Helsinki", "orders": [120, 1500, 700]},
+    {"name": "Rafi", "city": "Espoo", "orders": [2000, 300, 450]},
+    {"name": "Sara", "city": "Vantaa", "orders": [100, 200, 300]},
+    {"name": "Nabil", "city": "Helsinki", "orders": [2500, 1200, 800]}
 ]
-
-total_inventory_value = 0
-
-for item in products:
-    result = item["price"] * item["quantity"]
-    total_inventory_value = total_inventory_value + result
-    print(item["product_name"], result)
-
-print("Total inventory value in the warehouse is:", total_inventory_value)
-
-for item in products:
-    if item["quantity"] <= 5:
-        print(item["product_name"], "is low in stock")
-
-low_stock = 0
-
-for item in products:
-    if item["quantity"] <= 5:
-        low_stock = low_stock + 1
-
-print("Number of low-stock products is:", low_stock)
 ```
 
-### Output
+I created a function to calculate one customer's total orders:
+
+```python
+def calculate_order_total(customer):
+    total = 0
+
+    for order in customer["orders"]:
+        total = total + order
+
+    return total
+```
+
+Then I processed all customers:
+
+```python
+high_value_count = 0
+
+for customer in customers:
+    total_order = calculate_order_total(customer)
+
+    print(customer["name"], total_order)
+
+    if total_order > 2000:
+        print(customer["name"], "is a high-value customer")
+        high_value_count = high_value_count + 1
+
+print("High-value customers:", high_value_count)
+```
+
+Output:
 
 ```text
-Laptop 20000
-Mouse 200
-Keyboard 400
-Ram 1250
-SSD 4000
-Monitor 27000
-Total inventory value in the warehouse is: 52850
-Keyboard is low in stock
-Ram is low in stock
-Number of low-stock products is: 2
+Amina 2320
+Amina is a high-value customer
+Rafi 2750
+Rafi is a high-value customer
+Sara 600
+Nabil 4500
+Nabil is a high-value customer
+High-value customers: 3
+```
+
+I also practised:
+
+```python
+print(customer)
+print(customer["name"])
+print(customer.values())
+print(customer.items())
 ```
 
 ---
 
-## Key Programming Terms
+## 3. Interview Questions & Answers
 
-- **Dictionary** — stores data as key-value pairs
-- **Key** — identifies a value in a dictionary
-- **Value** — data associated with a key
-- **Key-value pair** — a key and its associated value
-- **Dictionary key lookup** — accessing a value using a key
-- **Dictionary method** — a method that belongs to a dictionary
-- **`.items()`** — provides dictionary key-value pairs
-- **Unpacking** — assigning parts of a pair to separate variables
-- **List of dictionaries** — multiple dictionary records stored in a list
-- **Record** — one structured set of related data
-- **Loop variable** — temporary variable representing the current item
-- **Iteration** — one pass through a loop
-- **Conditional statement** — decision-making using `if`
-- **Comparison expression** — compares two values
-- **Initialization** — giving a variable its starting value
-- **Accumulator** — stores a running total
-- **Accumulation** — repeatedly adding values to an accumulator
-- **Counter** — tracks how many times something occurs
-- **Indentation** — defines Python code blocks
+### What is a nested data structure?
 
----
+A nested data structure is a data structure stored inside another data structure.
 
-## Code Review
+### What is a nested loop?
+
+A nested loop is a loop inside another loop.
+
+### What is the difference between `customers` and `customer`?
+
+`customers` represents many customer dictionaries.
+
+`customer` represents one customer dictionary.
+
+### Why does `customers["name"]` not work?
+
+Because `customers` is a list.
+
+A list first needs an integer index:
 
 ```python
-products = [...]
+customers[0]["name"]
 ```
 
-→ **List of dictionaries**
+### When do I use `.items()`?
+
+When I need both the keys and values of a dictionary.
+
+### Can I use `.items()` directly on `customers`?
+
+No. `customers` is a list.
+
+Each `customer` inside it is a dictionary, so:
 
 ```python
-{"product_name": "Laptop", "price": 2000, "quantity": 10}
+customer.items()
 ```
 
-→ **Dictionary / Record**
+works.
+
+### Where does the function parameter `customer` get its value?
+
+It receives its value when the function is called.
 
 ```python
-item["price"]
+calculate_order_total(customer)
 ```
 
-→ **Dictionary key lookup**
+### Does a function need two parameters?
 
-```python
-for item in products:
-```
+No. A function can have zero, one, two, or more parameters.
 
-→ **For loop / Iteration**
+### Is a one-parameter function a lambda function?
 
-```python
-result = item["price"] * item["quantity"]
-```
+No. A function created using `def` is a normal user-defined function.
 
-→ **Assignment statement + Arithmetic expression**
+### Why do we use `return`?
 
-```python
-total_inventory_value = 0
-```
+`return` sends the calculated value from inside the function back outside.
 
-→ **Initialization**
+### Why should `return` be outside the order loop?
 
-```python
-total_inventory_value = total_inventory_value + result
-```
+Because `return` ends the function. If it is inside the loop, the function can stop after the first order.
 
-→ **Accumulation**
+### Do variables inside and outside a function need the same name?
 
-```python
-if item["quantity"] <= 5:
-```
+No.
 
-→ **Conditional statement + Comparison expression**
+`return` sends the value, not the variable name.
 
-```python
-low_stock = low_stock + 1
-```
+### What is REPL?
 
-→ **Counter increment / Accumulation**
-
-```python
-for key, value in product.items():
-```
-
-→ **Dictionary iteration + Unpacking**
-
----
-
-## Interview Quick Q&A — My Day 3 Questions
-
-**Q: Why do we use a `for` loop?**  
-A: A `for` loop repeats the same operation for every item in a collection.
-
-**Q: What is the difference between `for` and `if`?**  
-A: `for` performs iteration. `if` makes a decision based on a condition.
-
-**Q: Why do we use `for` and `if` together?**  
-A: `for` goes through every item, while `if` checks which items meet a condition.
-
-**Q: Why initialize `total_inventory_value = 0`?**  
-A: The accumulator needs a starting value before its previous value can be reused.
-
-**Q: Why don't we initialize `result = 0` first?**  
-A: `result` receives a new calculated value directly and does not depend on its previous value.
-
-**Q: Why should accumulator initialization be outside the loop?**  
-A: If it is inside the loop, the value resets during every iteration.
-
-**Q: What is an accumulator?**  
-A: An accumulator is a variable that stores a running total.
-
-**Q: What is a counter?**  
-A: A counter tracks how many times something happens.
-
-**Q: What does `.items()` do?**  
-A: `.items()` provides the key-value pairs of a dictionary for iteration.
-
-**Q: Why do we write `key, value` with `.items()`?**  
-A: Each dictionary item contains a key and a value, and Python unpacks them into two variables.
-
-**Q: Can `.items()` be used directly on `products`?**  
-A: No, because `products` is a list. First loop through the list, then use `.items()` on each dictionary.
-
-**Q: What is a list of dictionaries?**  
-A: It is a list containing multiple structured dictionary records.
-
-**Q: What is inventory value?**  
-A: Inventory value is the monetary value of stock, calculated here as `price × quantity`.
-
-**Q: Why can we calculate directly without storing the result in a variable?**  
-A: A calculation can be used directly, but storing it in a variable improves readability and allows reuse.
-
-**Q: What is the difference between `< 5` and `<= 5`?**  
-A: `< 5` excludes 5, while `<= 5` includes 5.
-
-**Q: Why is indentation important in Python?**  
-A: Indentation tells Python which statements belong inside loops, conditions, and other code blocks.
-
----
-
-## Day 3 Result
-
-Built a small warehouse inventory analysis program that can:
-
-- Store multiple product records
-- Calculate each product's inventory value
-- Calculate total warehouse inventory value
-- Identify low-stock products
-- Count low-stock products
-
-### Connection to Future Learning
+REPL means:
 
 ```text
-Python dictionaries
-        ↓
-List of business records
-        ↓
-CSV / JSON
-        ↓
-SQL tables
-        ↓
-Data cleaning and analysis
-        ↓
-Business reports and dashboards
+Read
+Evaluate
+Print
+Loop
 ```
-## Day 4 — Python Functions
 
-### What I Learned
+It is Python's interactive `>>>` environment.
 
-- What a function is
-- How to define a function using `def`
-- How to call a function
-- Parameters and arguments
-- Functions with multiple parameters
-- Built-in functions vs user-defined functions
-- `print()` vs `return`
-- Return values
-- Local variables and scope
-- Using functions with dictionaries
-- Using functions together with `for` loops
+### What is the difference between REPL and a `.py` file?
+
+REPL keeps variables while the current session remains active.
+
+A `.py` file runs independently from top to bottom and must contain the data it needs.
 
 ---
 
-### Why Functions?
+## 4. Summary — Mistakes & Corrections
 
-Functions help organize reusable and meaningful logic.
+### Mistake: Looping over the wrong object
 
-Instead of repeating:
-
-```python
-inventory_value = price * quantity
-```
-
-the calculation can be given a clear name:
+I wrote:
 
 ```python
-def calculate_inventory(price, quantity):
-    result = price * quantity
-    return result
+for order in customer:
 ```
 
-This makes code easier to reuse, change, test, and understand.
+This loops through dictionary keys.
+
+Correction:
+
+```python
+for order in customer["orders"]:
+```
+
+### Mistake: Comparing a list with an integer
+
+I tried:
+
+```python
+if customer["orders"] > 1000:
+```
+
+`customer["orders"]` is a whole list.
+
+Correction:
+
+```python
+if order > 1000:
+```
+
+### Mistake: Using `customers["name"]`
+
+`customers` is a list, not a dictionary.
+
+Correction:
+
+```python
+customers[0]["name"]
+```
+
+or:
+
+```python
+for customer in customers:
+    print(customer["name"])
+```
+
+### Mistake: Putting `return` inside the loop
+
+This would cause the function to stop too early.
+
+Correction:
+
+```python
+for order in customer["orders"]:
+    total = total + order
+
+return total
+```
+
+### Mistake: Counting high-value customers using the wrong loop
+
+I accidentally looped through the last `customer` dictionary instead of the full `customers` list.
+
+Correction:
+
+Increment the counter inside the main customer loop:
+
+```python
+if total_order > 2000:
+    high_value_count = high_value_count + 1
+```
+
+### Important Lesson
+
+```text
+customers
+→ many records
+
+customer
+→ one record
+
+customer["orders"]
+→ nested list
+
+order
+→ one value
+
+function
+→ calculation logic
+
+return
+→ sends calculated value back
+```
 
 ---
 
-### Main Syntax
+# Day 4 — Functions, Return Values & Scope
 
-#### Function Definition
+## 1. What Did I Learn Today?
+
+I learned:
+
+- User-defined functions
+- `def`
+- Parameters
+- Arguments
+- Function calls
+- Statements
+- Expressions
+- `return`
+- Local variables
+- Scope
+- Built-in functions
+- Functions combined with loops
+
+### Function
+
+A function is a reusable block of code that performs a task.
 
 ```python
 def function_name():
     statement
 ```
 
-#### Function Call
+### Parameter
+
+A parameter is a variable written in a function definition.
 
 ```python
-function_name()
+def show_product(product_name):
+    print(product_name)
 ```
 
-#### Function with Parameters
+### Argument
+
+An argument is an actual value passed into a function.
 
 ```python
-def function_name(parameter):
-    statement
+show_product("Laptop")
 ```
 
-#### Function with Multiple Parameters
+### Return
 
 ```python
-def calculate_inventory(price, quantity):
-    result = price * quantity
-    return result
+return result
 ```
 
-#### Calling the Function
+sends a value back to the caller.
 
-```python
-calculate_inventory(2000, 10)
-```
+### Scope
 
-Here:
+Scope determines where a variable can be accessed.
 
-- `price`, `quantity` → Parameters
-- `2000`, `10` → Arguments
+A variable created inside a function is normally a local variable.
 
 ---
 
-### `print()` vs `return`
+## 2. What Did I Do Today?
 
-```python
-def calculate_inventory(price, quantity):
-    result = price * quantity
-    print(result)
-```
-
-`print()` displays the value.
+I created functions such as:
 
 ```python
 def calculate_inventory(price, quantity):
@@ -517,31 +415,14 @@ def calculate_inventory(price, quantity):
     return result
 ```
 
-`return` sends the value back to the caller so it can be reused.
-
-Example:
+Then called them:
 
 ```python
 inventory_value = calculate_inventory(2000, 10)
 print(inventory_value)
 ```
 
----
-
-### Function + List of Dictionaries
-
-For one specific dictionary:
-
-```python
-inventory_value = calculate_inventory(
-    products[0]["price"],
-    products[0]["quantity"]
-)
-
-print(inventory_value)
-```
-
-For every dictionary:
+I also combined functions with product dictionaries:
 
 ```python
 for item in products:
@@ -553,213 +434,608 @@ for item in products:
     print(item["product_name"], inventory_value)
 ```
 
-Connection:
+---
 
-```text
-for loop
-→ handles repetition
+## 3. Interview Questions & Answers
 
-function
-→ handles reusable calculation logic
+### What is a function?
+
+A reusable block of code that performs a specific task.
+
+### What is a parameter?
+
+A variable defined in the function header.
+
+### What is an argument?
+
+The actual value passed to the function.
+
+### What is a statement?
+
+An instruction executed by Python.
+
+### What is an expression?
+
+Code that produces a value.
+
+```python
+price * quantity
 ```
+
+### What is the difference between `print()` and `return`?
+
+`print()` displays a value.
+
+`return` sends a value back to the caller.
+
+### What happens if a function does not have `return`?
+
+Python returns:
+
+```python
+None
+```
+
+### What is a local variable?
+
+A variable created inside a function.
+
+### Does `return` make a local variable global?
+
+No.
+
+It only sends the value outside.
+
+### What is the difference between a function and a loop?
+
+A function organizes reusable logic.
+
+A loop repeats an operation.
 
 ---
 
-### Scope
+## 4. Summary — Mistakes & Corrections
 
-A variable created inside a function is normally a local variable.
+### Mistake: Using `print()` when I needed `return`
+
+I created:
 
 ```python
 def calculate_inventory(price, quantity):
     result = price * quantity
-    return result
+    print(result)
 ```
 
-Here:
+The function displayed the result but returned `None`.
 
-```python
-result
-```
-
-is a local variable.
-
-Trying to access it directly outside the function can cause:
-
-```text
-NameError: name 'result' is not defined
-```
-
-`return` sends the value outside the function. It does not move the local variable itself outside.
-
----
-
-## Key Programming Terms
-
-- Function
-- Function definition
-- Function call
-- Built-in function
-- User-defined function
-- Parameter
-- Argument
-- Statement
-- Expression
-- Return statement
-- Return value
-- Local variable
-- Local scope
-- Scope
-- Nested function call
-
----
-
-## Code Review
-
-```python
-def calculate_inventory(price, quantity):
-```
-
-→ Function definition with two parameters
-
-```python
-price
-quantity
-```
-
-→ Parameters
-
-```python
-result = price * quantity
-```
-
-→ Assignment statement with arithmetic expression
+Correction:
 
 ```python
 return result
 ```
 
-→ Return statement
+### Mistake: Confusing parameters and arguments
+
+Correction:
 
 ```python
-calculate_inventory(2000, 10)
+def calculate_inventory(price, quantity):
 ```
 
-→ Function call
+`price` and `quantity` are parameters.
 
 ```python
-2000, 10
+calculate_inventory(500, 3)
 ```
 
-→ Arguments
+`500` and `3` are arguments.
+
+### Mistake: Confusion about scope
+
+I learned that an inside variable and outside variable can have the same name but still belong to different scopes.
+
+### Important Lesson
+
+```text
+Function
+→ reusable logic
+
+Parameter
+→ placeholder
+
+Argument
+→ actual input
+
+return
+→ sends result back
+```
+
+---
+
+# Day 3 — Dictionaries & Warehouse Analysis
+
+## 1. What Did I Learn Today?
+
+I learned:
+
+- Dictionaries
+- Keys
+- Values
+- Key-value pairs
+- Dictionary access
+- Updating values
+- Adding new keys
+- `.items()`
+- `.values()`
+- Unpacking
+- List of dictionaries
+- Accumulators
+- Counters
+
+### Dictionary
 
 ```python
-inventory_value = calculate_inventory(2000, 10)
+product = {
+    "product_name": "Laptop",
+    "price": 2000,
+    "quantity": 10
+}
 ```
 
-→ Assignment receiving a return value
+### Access a Value
 
 ```python
-print(calculate_inventory(500, 3))
+product["product_name"]
 ```
 
-→ Nested function call
+### Update a Value
+
+```python
+product["quantity"] = 5
+```
+
+### `.items()`
+
+```python
+for key, value in product.items():
+    print(key, value)
+```
+
+---
+
+## 2. What Did I Do Today?
+
+I created warehouse/product data:
+
+```python
+products = [
+    {"product_name": "Laptop", "price": 2000, "quantity": 10},
+    {"product_name": "Mouse", "price": 20, "quantity": 10},
+    {"product_name": "Keyboard", "price": 200, "quantity": 2}
+]
+```
+
+I calculated inventory values:
+
+```python
+total_inventory_value = 0
+
+for item in products:
+    result = item["price"] * item["quantity"]
+    total_inventory_value = total_inventory_value + result
+```
+
+I identified low-stock products:
 
 ```python
 for item in products:
+    if item["quantity"] <= 5:
+        print(item["product_name"], "is low in stock")
 ```
 
-→ Iteration
+---
+
+## 3. Interview Questions & Answers
+
+### What is a dictionary?
+
+A data structure that stores key-value pairs.
+
+### What is a key?
+
+A key identifies a value.
+
+### What does `.items()` return?
+
+Key-value pairs.
+
+### What does `.values()` return?
+
+Dictionary values.
+
+### What happens when I loop directly over a dictionary?
+
+Python normally iterates through the keys.
+
+### Why do we initialize an accumulator with `0`?
+
+Because it needs a starting value before values can be added repeatedly.
+
+### What is the difference between `if` and `for`?
+
+`if` makes a decision.
+
+`for` repeats an operation.
+
+### What is a list of dictionaries?
+
+A list containing multiple structured records.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+### Mistake: Trying to unpack a dictionary directly
+
+I tried:
 
 ```python
-calculate_inventory(
-    item["price"],
-    item["quantity"]
-)
+for key, value in customer:
 ```
 
-→ Function call using dictionary values as arguments
+Correction:
 
----
+```python
+for key, value in customer.items():
+```
 
-## Interview Quick Q&A — My Day 4 Questions
+### Mistake: Calling `.items()` on a list
 
-**Q: What is a function?**  
-A: A function is a reusable block of code designed to perform a specific task.
+Correction:
 
-**Q: What is a parameter?**  
-A: A parameter is a variable in a function definition that receives input.
+```python
+for product in products:
+    for key, value in product.items():
+        print(key, value)
+```
 
-**Q: What is an argument?**  
-A: An argument is the actual value passed to a function when it is called.
+### Mistake: Accumulator initialization confusion
 
-**Q: What is a statement?**  
-A: A statement is an instruction that tells Python to perform an action.
+I learned:
 
-**Q: What is the difference between a parameter and an argument?**  
-A: A parameter is defined in the function; an argument is the actual value supplied when calling it.
+```python
+total = 0
+```
 
-**Q: Is `print()` a function?**  
-A: Yes. `print()` is a built-in Python function.
+must be created before:
 
-**Q: What is a user-defined function?**  
-A: A function created by the programmer using `def`.
+```python
+total = total + value
+```
 
-**Q: Why should I not create my own function named `print`?**  
-A: It would shadow Python's built-in `print()` function.
-
-**Q: Why use `return` instead of only `print()`?**  
-A: `print()` displays a value, while `return` sends a value back so it can be reused elsewhere.
-
-**Q: Can I write `print(calculate_inventory(500, 3))`?**  
-A: Yes. The inner function returns a value, and `print()` displays that returned value.
-
-**Q: When should I use a function and when should I use a `for` loop?**  
-A: Use a `for` loop for repetition. Use a function to organize and reuse specific logic. They can also be used together.
-
-**Q: Why do `price` and `quantity` appear both in the function and in the loop?**  
-A: Inside the function they are parameters. In the function call, dictionary values are passed as arguments to those parameters.
-
-**Q: What is scope?**  
-A: Scope determines where a variable can be accessed in a program.
-
-**Q: What is a local variable?**  
-A: A local variable is created inside a function and is normally accessible only inside that function.
-
-**Q: Does `return` make a local variable available outside the function?**  
-A: No. It returns the variable's value, not the local variable itself.
-
-**Q: Why is scope useful?**  
-A: Scope prevents variable conflicts and helps keep functions independent and easier to debug.
-
----
-
-## Day 4 Result
-
-I can now:
-
-- Define and call functions
-- Pass values using parameters and arguments
-- Return calculated values
-- Understand the difference between `print()` and `return`
-- Understand local variables and scope
-- Use dictionary values as function arguments
-- Combine functions with `for` loops
-- Separate reusable business logic from repetition
-
-### Connection to Future Learning
+### Important Lesson
 
 ```text
-Functions
-    ↓
-Reusable business logic
-    ↓
-Data cleaning functions
-    ↓
-File processing
-    ↓
-CSV processing
-    ↓
-Larger Python programs
-    ↓
-Testing and automation
+Dictionary
+→ one structured record
+
+List of dictionaries
+→ many structured records
+```
+
+---
+
+# Day 2 — Lists, Loops & Sales Analysis
+
+## 1. What Did I Learn Today?
+
+I learned:
+
+- Lists
+- Indexes
+- `for` loops
+- `sum()`
+- `len()`
+- `max()`
+- `min()`
+- Average calculations
+- Counters
+- List methods
+
+### List
+
+```python
+sales = [1200, 850, 2100, 600]
+```
+
+### Index
+
+Indexes start at `0`.
+
+```python
+sales[0]
+```
+
+### For Loop
+
+```python
+for item in collection:
+    statement
+```
+
+### Counter
+
+```python
+count = 0
+
+for sale in sales:
+    if sale > 1000:
+        count = count + 1
+```
+
+---
+
+## 2. What Did I Do Today?
+
+I analysed sales data:
+
+```python
+total_sales = sum(sales)
+average_sales = total_sales / len(sales)
+
+print(total_sales)
+print(average_sales)
+print(max(sales))
+print(min(sales))
+```
+
+I practised list methods:
+
+```python
+sales.append(7000)
+sales.remove(850)
+sales.insert(1, 1000)
+sales.pop(2)
+```
+
+I also updated values using indexes.
+
+---
+
+## 3. Interview Questions & Answers
+
+### What is a list?
+
+An ordered collection containing multiple values.
+
+### What is an index?
+
+The numerical position of an item in a list.
+
+### What is a `for` loop?
+
+A loop that processes items from a collection one at a time.
+
+### What does `sum()` do?
+
+Adds numerical values.
+
+### What does `len()` do?
+
+Returns the number of items.
+
+### What is a counter?
+
+A variable used to count occurrences.
+
+### What is a method?
+
+A function associated with an object.
+
+Example:
+
+```python
+sales.append(500)
+```
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+### Mistake: Confusing indexes and values
+
+I learned:
+
+```python
+sales[0]
+```
+
+means the first value.
+
+### Mistake: Expecting `.py` scripts to display expressions automatically
+
+Correction:
+
+Use:
+
+```python
+print(...)
+```
+
+### Mistake: Confusing loop-variable names with indexes
+
+Example:
+
+```python
+for item in sales:
+```
+
+`item` represents the current value.
+
+### Important Lesson
+
+Lists allow multiple ordered values to be stored and processed using loops.
+
+---
+
+# Day 1 — Python Fundamentals & Business Calculations
+
+## 1. What Did I Learn Today?
+
+I learned:
+
+- Variables
+- Strings
+- Integers
+- Floats
+- `input()`
+- Type conversion
+- Arithmetic calculations
+- `if`, `elif`, `else`
+- Comparison operators
+- f-strings
+- `round()`
+- Basic debugging
+
+### Variable
+
+```python
+price = 100
+quantity = 5
+```
+
+### Conditional Statement
+
+```python
+if subtotal >= 1500:
+    print("Discount applied")
+else:
+    print("No discount")
+```
+
+### f-string
+
+```python
+print(f"Total: {total:.2f}")
+```
+
+---
+
+## 2. What Did I Do Today?
+
+I created a business sales calculator using:
+
+```text
+Product
+↓
+Price
+↓
+Quantity
+↓
+Subtotal
+↓
+Discount
+↓
+Tax
+↓
+Final total
+```
+
+Example:
+
+```python
+subtotal = price * quantity
+
+if subtotal >= 1500:
+    discount = subtotal * 0.10
+else:
+    discount = 0
+
+discounted_subtotal = subtotal - discount
+tax = discounted_subtotal * 0.24
+total = discounted_subtotal + tax
+
+print(f"Total: {total:.2f}")
+```
+
+I also practised delivery conditions and debugging.
+
+---
+
+## 3. Interview Questions & Answers
+
+### What is a variable?
+
+A name used to store a value.
+
+### What is an integer?
+
+A whole number.
+
+### What is a float?
+
+A number containing a decimal part.
+
+### Why do we use `if`?
+
+To make decisions based on conditions.
+
+### Why do we use `int()` or `float()` with `input()`?
+
+Because `input()` returns text, while numerical calculations require numerical data types.
+
+### What is an f-string?
+
+A formatted string that allows variables and expressions to be inserted into text.
+
+### Why can floating-point calculations show unexpected decimal digits?
+
+Because computers represent many decimal values approximately in binary.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+### Mistake: Using variables before defining them
+
+This caused:
+
+```text
+NameError
+```
+
+Correction:
+
+Define the variable first.
+
+### Mistake: Syntax errors
+
+Correction:
+
+Check punctuation, quotes and Python syntax carefully.
+
+### Mistake: Indentation errors
+
+Correction:
+
+Code inside conditional blocks must be indented consistently.
+
+### Mistake: Expecting dependent values to update automatically in REPL
+
+Changing one variable does not automatically recalculate another variable.
+
+The calculation must be executed again.
+
+### Important Lesson
+
+The basic program flow I learned was:
+
+```text
+Input
+↓
+Calculation
+↓
+Decision
+↓
+Output
 ```
