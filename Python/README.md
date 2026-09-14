@@ -2,6 +2,7 @@
 
 This repository documents my hands-on Python learning journey and portfolio development.
 
+
 ## Day 1 - Python Fundamentals & Debugging
 
 ### What I Practiced
