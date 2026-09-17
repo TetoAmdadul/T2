@@ -1,1308 +1,269 @@
-# Day 6 — Python File Handling
+# Python Learning Diary
+
+This repository documents my Python learning journey from fundamentals to practical data analysis projects.
+
+My main goal is to build a strong foundation in Python and gradually connect it with SQL, data analysis, Power BI, and Data Engineering.
+
+---
+
+# Day 1 — Python Fundamentals
 
 ## 1. What Did I Learn Today?
 
-Today I learned the fundamentals of **File Handling in Python**.
+- Learned what a variable is.
+- Learned basic Python data types.
+- Learned how to take user input using `input()`.
+- Learned type conversion using:
+  - `int()`
+  - `float()`
+  - `str()`
+- Learned conditional statements:
+  - `if`
+  - `elif`
+  - `else`
+- Learned the difference between an expression and a statement.
+- Learned how f-strings work.
+- Learned how `round()` works.
+- Learned the difference between rounding a numeric value and formatting a number for display.
 
-### What is File Handling?
+### Variable
 
-File handling means using Python to **read data from files, write data to files, and update existing files**.
-
-This connects later to:
-
-```text
-TXT files
-↓
-CSV files
-↓
-Data cleaning
-↓
-pandas
-↓
-SQL / databases
-↓
-Data analysis
-```
-
-### Opening a File
-
-General syntax:
-
-```python
-with open("filename.txt", "mode") as file:
-    statement
-```
-
-Using `with open(...)` allows Python to open the file, work with it, and close it automatically when the block is finished.
-
----
-
-### File Modes
-
-#### Read Mode — `"r"`
-
-Used to read an existing file.
-
-```python
-with open("customer_report.txt", "r") as file:
-    content = file.read()
-```
-
-```text
-"r" → read
-```
-
----
-
-#### Write Mode — `"w"`
-
-Used to write data to a file.
-
-```python
-with open("customer_report.txt", "w") as file:
-    file.write("Customer Order Report\n")
-```
-
-Important:
-
-```text
-"w"
-→ writes data
-→ replaces existing file content
-```
-
----
-
-#### Append Mode — `"a"`
-
-Used to add new content without deleting existing content.
-
-```python
-with open("customer_report.txt", "a") as file:
-    file.write("Amina 2320\n")
-```
-
-```text
-"a"
-→ keeps old content
-→ adds new content at the end
-```
-
----
-
-### `.read()`
-
-`.read()` reads the complete file content.
-
-```python
-with open("customer_report.txt", "r") as file:
-    content = file.read()
-
-print(content)
-```
-
----
-
-### `.write()`
-
-`.write()` writes text into a file.
-
-```python
-with open("customer_report.txt", "w") as file:
-    file.write("Customer Order Report\n")
-```
-
-In the Python REPL, `.write()` can display the number of characters written.
+A variable is a name that refers to or stores a value.
 
 Example:
 
 ```python
-file.write("Customer Order Report\n")
+price = 100
+quantity = 3
 ```
 
-returned:
+### Expression
 
-```text
-22
-```
-
-This means 22 characters were written to the file.
-
----
-
-### Newline — `\n`
-
-`\n` means **new line**.
-
-```python
-file.write("Customer Order Report\n")
-```
-
-Without `\n`, the next Terminal prompt may appear on the same line as the file content.
-
----
-
-### Reading a File Line by Line
-
-Instead of reading the whole file at once, I can process one line at a time.
-
-General syntax:
-
-```python
-with open("filename.txt", "r") as file:
-    for line in file:
-        print(line)
-```
+An expression is code that produces a value.
 
 Example:
-
-```python
-with open("customer_report.txt", "r") as file:
-    for line in file:
-        print(line.strip())
-```
-
----
-
-### `.strip()`
-
-`.strip()` removes unnecessary whitespace and newline characters from the beginning and end of a string.
-
-General syntax:
-
-```python
-string.strip()
-```
-
-Example:
-
-```python
-print(line.strip())
-```
-
----
-
-### File Line Counter
-
-I also connected file handling with the counter pattern:
-
-```python
-with open("customer_report.txt", "r") as file:
-    count = 0
-
-    for line in file:
-        count = count + 1
-
-print(count)
-```
-
-This counted how many lines were in the file.
-
----
-
-### Key Programming Terms
-
-- File handling
-- File
-- `open()`
-- File mode
-- Read mode
-- Write mode
-- Append mode
-- `.read()`
-- `.write()`
-- `.strip()`
-- File object
-- Newline
-- Line-by-line processing
-- Counter
-- `with` statement
-
-
-## 2. What Did I Do Today?
-
-I created and worked with text files using Python.
-
-### Read an Existing File
-
-I read:
-
-```text
-1200
-850
-2100
-600
-```
-
-using:
-
-```python
-with open("file_handle_python.txt", "r") as file:
-    content = file.read()
-
-print(content)
-```
-
----
-
-### Created a Customer Report
-
-I wrote:
-
-```text
-Customer Order Report
-```
-
-to:
-
-```text
-customer_report.txt
-```
-
-using:
-
-```python
-with open("customer_report.txt", "w") as file:
-    file.write("Customer Order Report\n")
-```
-
----
-
-### Appended Customer Data
-
-I added new data without removing the existing report:
-
-```text
-Amina 2320
-Rafi 2750
-```
-
-using append mode.
-
-The final file contained:
-
-```text
-Customer Order Report
-Amina 2320
-Rafi 2750
-```
-
----
-
-### Read the Final File in the Python REPL
-
-```python
-with open("customer_report.txt", "r") as file:
-    content = file.read()
-
-print(content)
-```
-
-Output:
-
-```text
-Customer Order Report
-Amina 2320
-Rafi 2750
-```
-
----
-
-### Read the File Line by Line
-
-```python
-with open("customer_report.txt", "r") as file:
-    for line in file:
-        print(line.strip())
-```
-
-Output:
-
-```text
-Customer Order Report
-Amina 2320
-Rafi 2750
-```
-
----
-
-### Counted the Number of Lines
-
-```python
-with open("customer_report.txt", "r") as file:
-    count = 0
-
-    for line in file:
-        count = count + 1
-
-print(count)
-```
-
-Output:
-
-```text
-3
-```
-
-I also used Terminal to check file contents:
-
-```bash
-cat customer_report.txt
-```
-
-
-## 3. Interview Questions & Answers
-
-### What is file handling in Python?
-
-File handling is the process of reading, writing, or updating data stored in files.
-
-### What does `open()` do?
-
-`open()` opens a file so Python can work with it.
-
-### What does `"r"` mean?
-
-`"r"` means **read mode**.
-
-It is used to read an existing file.
-
-### What does `"w"` mean?
-
-`"w"` means **write mode**.
-
-It writes data to a file and can replace existing content.
-
-### What does `"a"` mean?
-
-`"a"` means **append mode**.
-
-It adds new content to the end of a file without deleting the existing content.
-
-### Why use `with open(...)`?
-
-It provides a clean way to work with files and automatically closes the file when the block finishes.
-
-### What is the difference between `.read()` and `for line in file`?
-
-`.read()` reads the whole file at once.
-
-```python
-file.read()
-```
-
-`for line in file` processes the file one line at a time.
-
-```python
-for line in file:
-```
-
-### What does `.write()` do?
-
-`.write()` writes a string into a file.
-
-### Why did `.write()` return `22` in the REPL?
-
-`.write()` returns the number of characters successfully written to the file.
-
-### What does `\n` mean?
-
-`\n` represents a newline character.
-
-### What does `.strip()` do?
-
-`.strip()` removes leading and trailing whitespace, including newline characters.
-
-### Can files be read directly in the Python REPL?
-
-Yes.
-
-The same file-handling syntax works in both the REPL and `.py` files.
-
-### Why would I read a file line by line?
-
-Line-by-line processing is useful when each line needs to be processed separately and is also useful for larger files.
-
-
-## 4. Summary — Mistakes & Corrections
-
-### Mistake: Opening a `with` block without an indented statement
-
-I wrote:
-
-```python
-with open("customer_report.txt", "w") as file:
-```
-
-and finished the block without writing anything inside it.
-
-This caused:
-
-```text
-IndentationError: expected an indented block
-```
-
-Correction:
-
-```python
-with open("customer_report.txt", "w") as file:
-    file.write("Customer Order Report")
-```
-
-I learned that code after a line ending with `:` must contain an indented block.
-
----
-
-### Issue: File output and Terminal prompt appeared on the same line
-
-I originally wrote:
-
-```python
-file.write("Customer Order Report")
-```
-
-The file had no newline at the end.
-
-Correction:
-
-```python
-file.write("Customer Order Report\n")
-```
-
-I learned that:
-
-```text
-\n
-```
-
-moves the following output to a new line.
-
----
-
-### Mistake: Typing `exit` instead of `exit()`
-
-In the Python REPL I typed:
-
-```text
-exit
-```
-
-Python reminded me to use:
-
-```python
-exit()
-```
-
-or:
-
-```text
-Ctrl + D
-```
-
-I used `Ctrl + D` successfully to return to the normal Terminal.
-
----
-
-### Important File Mode Difference
-
-```text
-"r"
-→ read existing content
-
-"w"
-→ write and replace content
-
-"a"
-→ add content without deleting old content
-```
-
----
-
-### Important Connection
-
-Today I connected previous Python knowledge with file handling:
-
-```text
-File
-↓
-for loop
-↓
-one line at a time
-↓
-.strip()
-↓
-counter
-↓
-process real data
-```
-
-This prepares me for **CSV files, data cleaning, pandas, SQL and real business datasets**.
-
-
-# Python Learning & Portfolio Journey
-
-# Day 5 — Nested Data, Nested Loops, Functions & Customer Analysis
-
-## 1. What Did I Learn Today?
-
-I learned:
-
-- Nested data structures
-- List of dictionaries
-- Lists inside dictionaries
-- Nested loops
-- Outer loop and inner loop
-- Dictionary key access
-- `.values()`
-- `.items()`
-- Key-value unpacking
-- Functions with dictionaries
-- Accumulators
-- Counters
-- `return`
-- REPL vs `.py` files
-
-### Nested Data Structure
-
-Nested data means one data structure is stored inside another.
-
-```python
-customer = {
-    "name": "Mika",
-    "city": "Espoo",
-    "orders": [500, 1800, 700]
-}
-```
-
-Here:
-
-```python
-customer["orders"]
-```
-
-returns a list stored inside the dictionary.
-
-### Nested Loop
-
-A nested loop is a loop inside another loop.
-
-```python
-for customer in customers:
-    for order in customer["orders"]:
-        print(order)
-```
-
-### `.items()`
-
-`.items()` is used when both dictionary keys and values are needed.
-
-```python
-for key, value in customer.items():
-    print(key, value)
-```
-
-### Accumulator
-
-An accumulator builds a running value.
-
-```python
-total = 0
-total = total + order
-```
-
-### Counter
-
-A counter counts how many times something happens.
-
-```python
-high_value_count = 0
-high_value_count = high_value_count + 1
-```
-
-### `return`
-
-`return` sends a value calculated inside a function back to the caller.
-
----
-
-## 2. What Did I Do Today?
-
-I created customer data using a list of dictionaries:
-
-```python
-customers = [
-    {"name": "Amina", "city": "Helsinki", "orders": [120, 1500, 700]},
-    {"name": "Rafi", "city": "Espoo", "orders": [2000, 300, 450]},
-    {"name": "Sara", "city": "Vantaa", "orders": [100, 200, 300]},
-    {"name": "Nabil", "city": "Helsinki", "orders": [2500, 1200, 800]}
-]
-```
-
-I created a function to calculate one customer's total orders:
-
-```python
-def calculate_order_total(customer):
-    total = 0
-
-    for order in customer["orders"]:
-        total = total + order
-
-    return total
-```
-
-Then I processed all customers:
-
-```python
-high_value_count = 0
-
-for customer in customers:
-    total_order = calculate_order_total(customer)
-
-    print(customer["name"], total_order)
-
-    if total_order > 2000:
-        print(customer["name"], "is a high-value customer")
-        high_value_count = high_value_count + 1
-
-print("High-value customers:", high_value_count)
-```
-
-Output:
-
-```text
-Amina 2320
-Amina is a high-value customer
-Rafi 2750
-Rafi is a high-value customer
-Sara 600
-Nabil 4500
-Nabil is a high-value customer
-High-value customers: 3
-```
-
-I also practised:
-
-```python
-print(customer)
-print(customer["name"])
-print(customer.values())
-print(customer.items())
-```
-
----
-
-## 3. Interview Questions & Answers
-
-### What is a nested data structure?
-
-A nested data structure is a data structure stored inside another data structure.
-
-### What is a nested loop?
-
-A nested loop is a loop inside another loop.
-
-### What is the difference between `customers` and `customer`?
-
-`customers` represents many customer dictionaries.
-
-`customer` represents one customer dictionary.
-
-### Why does `customers["name"]` not work?
-
-Because `customers` is a list.
-
-A list first needs an integer index:
-
-```python
-customers[0]["name"]
-```
-
-### When do I use `.items()`?
-
-When I need both the keys and values of a dictionary.
-
-### Can I use `.items()` directly on `customers`?
-
-No. `customers` is a list.
-
-Each `customer` inside it is a dictionary, so:
-
-```python
-customer.items()
-```
-
-works.
-
-### Where does the function parameter `customer` get its value?
-
-It receives its value when the function is called.
-
-```python
-calculate_order_total(customer)
-```
-
-### Does a function need two parameters?
-
-No. A function can have zero, one, two, or more parameters.
-
-### Is a one-parameter function a lambda function?
-
-No. A function created using `def` is a normal user-defined function.
-
-### Why do we use `return`?
-
-`return` sends the calculated value from inside the function back outside.
-
-### Why should `return` be outside the order loop?
-
-Because `return` ends the function. If it is inside the loop, the function can stop after the first order.
-
-### Do variables inside and outside a function need the same name?
-
-No.
-
-`return` sends the value, not the variable name.
-
-### What is REPL?
-
-REPL means:
-
-```text
-Read
-Evaluate
-Print
-Loop
-```
-
-It is Python's interactive `>>>` environment.
-
-### What is the difference between REPL and a `.py` file?
-
-REPL keeps variables while the current session remains active.
-
-A `.py` file runs independently from top to bottom and must contain the data it needs.
-
----
-
-## 4. Summary — Mistakes & Corrections
-
-### Mistake: Looping over the wrong object
-
-I wrote:
-
-```python
-for order in customer:
-```
-
-This loops through dictionary keys.
-
-Correction:
-
-```python
-for order in customer["orders"]:
-```
-
-### Mistake: Comparing a list with an integer
-
-I tried:
-
-```python
-if customer["orders"] > 1000:
-```
-
-`customer["orders"]` is a whole list.
-
-Correction:
-
-```python
-if order > 1000:
-```
-
-### Mistake: Using `customers["name"]`
-
-`customers` is a list, not a dictionary.
-
-Correction:
-
-```python
-customers[0]["name"]
-```
-
-or:
-
-```python
-for customer in customers:
-    print(customer["name"])
-```
-
-### Mistake: Putting `return` inside the loop
-
-This would cause the function to stop too early.
-
-Correction:
-
-```python
-for order in customer["orders"]:
-    total = total + order
-
-return total
-```
-
-### Mistake: Counting high-value customers using the wrong loop
-
-I accidentally looped through the last `customer` dictionary instead of the full `customers` list.
-
-Correction:
-
-Increment the counter inside the main customer loop:
-
-```python
-if total_order > 2000:
-    high_value_count = high_value_count + 1
-```
-
-### Important Lesson
-
-```text
-customers
-→ many records
-
-customer
-→ one record
-
-customer["orders"]
-→ nested list
-
-order
-→ one value
-
-function
-→ calculation logic
-
-return
-→ sends calculated value back
-```
-
----
-
-# Day 4 — Functions, Return Values & Scope
-
-## 1. What Did I Learn Today?
-
-I learned:
-
-- User-defined functions
-- `def`
-- Parameters
-- Arguments
-- Function calls
-- Statements
-- Expressions
-- `return`
-- Local variables
-- Scope
-- Built-in functions
-- Functions combined with loops
-
-### Function
-
-A function is a reusable block of code that performs a task.
-
-```python
-def function_name():
-    statement
-```
-
-### Parameter
-
-A parameter is a variable written in a function definition.
-
-```python
-def show_product(product_name):
-    print(product_name)
-```
-
-### Argument
-
-An argument is an actual value passed into a function.
-
-```python
-show_product("Laptop")
-```
-
-### Return
-
-```python
-return result
-```
-
-sends a value back to the caller.
-
-### Scope
-
-Scope determines where a variable can be accessed.
-
-A variable created inside a function is normally a local variable.
-
----
-
-## 2. What Did I Do Today?
-
-I created functions such as:
-
-```python
-def calculate_inventory(price, quantity):
-    result = price * quantity
-    return result
-```
-
-Then called them:
-
-```python
-inventory_value = calculate_inventory(2000, 10)
-print(inventory_value)
-```
-
-I also combined functions with product dictionaries:
-
-```python
-for item in products:
-    inventory_value = calculate_inventory(
-        item["price"],
-        item["quantity"]
-    )
-
-    print(item["product_name"], inventory_value)
-```
-
----
-
-## 3. Interview Questions & Answers
-
-### What is a function?
-
-A reusable block of code that performs a specific task.
-
-### What is a parameter?
-
-A variable defined in the function header.
-
-### What is an argument?
-
-The actual value passed to the function.
-
-### What is a statement?
-
-An instruction executed by Python.
-
-### What is an expression?
-
-Code that produces a value.
 
 ```python
 price * quantity
 ```
 
-### What is the difference between `print()` and `return`?
+### Statement
 
-`print()` displays a value.
+A statement is a complete instruction for Python.
 
-`return` sends a value back to the caller.
-
-### What happens if a function does not have `return`?
-
-Python returns:
+Example:
 
 ```python
-None
+total = price * quantity
 ```
 
-### What is a local variable?
-
-A variable created inside a function.
-
-### Does `return` make a local variable global?
-
-No.
-
-It only sends the value outside.
-
-### What is the difference between a function and a loop?
-
-A function organizes reusable logic.
-
-A loop repeats an operation.
-
----
-
-## 4. Summary — Mistakes & Corrections
-
-### Mistake: Using `print()` when I needed `return`
-
-I created:
+The statement contains the expression:
 
 ```python
-def calculate_inventory(price, quantity):
-    result = price * quantity
-    print(result)
+price * quantity
 ```
 
-The function displayed the result but returned `None`.
+### f-string
 
-Correction:
+Standard syntax:
 
 ```python
-return result
+f"Text {expression}"
 ```
 
-### Mistake: Confusing parameters and arguments
-
-Correction:
+Example:
 
 ```python
-def calculate_inventory(price, quantity):
+name = "Amina"
+print(f"Customer name is {name}")
 ```
 
-`price` and `quantity` are parameters.
+The `{}` part is called a placeholder or replacement field.
+
+### Formatting decimal places
+
+Example:
 
 ```python
-calculate_inventory(500, 3)
+average = 10.5678
+
+print(f"Average: {average:.2f}")
 ```
 
-`500` and `3` are arguments.
-
-### Mistake: Confusion about scope
-
-I learned that an inside variable and outside variable can have the same name but still belong to different scopes.
-
-### Important Lesson
+Output:
 
 ```text
-Function
-→ reusable logic
-
-Parameter
-→ placeholder
-
-Argument
-→ actual input
-
-return
-→ sends result back
+Average: 10.57
 ```
 
----
+### `round()`
 
-# Day 3 — Dictionaries & Warehouse Analysis
-
-## 1. What Did I Learn Today?
-
-I learned:
-
-- Dictionaries
-- Keys
-- Values
-- Key-value pairs
-- Dictionary access
-- Updating values
-- Adding new keys
-- `.items()`
-- `.values()`
-- Unpacking
-- List of dictionaries
-- Accumulators
-- Counters
-
-### Dictionary
+Example:
 
 ```python
-product = {
-    "product_name": "Laptop",
-    "price": 2000,
-    "quantity": 10
-}
+average = 10.5678
+
+rounded_average = round(average, 2)
+print(rounded_average)
 ```
 
-### Access a Value
+`round()` returns a rounded numeric value.
 
-```python
-product["product_name"]
-```
-
-### Update a Value
-
-```python
-product["quantity"] = 5
-```
-
-### `.items()`
-
-```python
-for key, value in product.items():
-    print(key, value)
-```
+`:.2f` is mainly used for display formatting.
 
 ---
 
 ## 2. What Did I Do Today?
 
-I created warehouse/product data:
+- Created variables.
+- Performed basic calculations.
+- Used `input()` to receive values.
+- Converted input values into numbers.
+- Used `if`, `elif`, and `else`.
+- Practiced arithmetic expressions.
+- Printed results using normal `print()`.
+- Printed formatted results using f-strings.
+- Practiced `round()` and decimal formatting.
+
+Example:
 
 ```python
-products = [
-    {"product_name": "Laptop", "price": 2000, "quantity": 10},
-    {"product_name": "Mouse", "price": 20, "quantity": 10},
-    {"product_name": "Keyboard", "price": 200, "quantity": 2}
-]
-```
+price = 100
+quantity = 3
 
-I calculated inventory values:
+total = price * quantity
 
-```python
-total_inventory_value = 0
-
-for item in products:
-    result = item["price"] * item["quantity"]
-    total_inventory_value = total_inventory_value + result
-```
-
-I identified low-stock products:
-
-```python
-for item in products:
-    if item["quantity"] <= 5:
-        print(item["product_name"], "is low in stock")
+print(f"Total price is {total}")
 ```
 
 ---
 
 ## 3. Interview Questions & Answers
 
-### What is a dictionary?
+**Q: What is a variable in Python?**
 
-A data structure that stores key-value pairs.
+A: A variable is a name that refers to a value stored in memory.
 
-### What is a key?
+**Q: What is an expression?**
 
-A key identifies a value.
+A: An expression is code that produces a value.
 
-### What does `.items()` return?
+Example:
 
-Key-value pairs.
+```python
+price * quantity
+```
 
-### What does `.values()` return?
+**Q: What is a statement?**
 
-Dictionary values.
+A: A statement is a complete instruction for Python to perform an action.
 
-### What happens when I loop directly over a dictionary?
+Example:
 
-Python normally iterates through the keys.
+```python
+total = price * quantity
+```
 
-### Why do we initialize an accumulator with `0`?
+**Q: What is the difference between an expression and a statement?**
 
-Because it needs a starting value before values can be added repeatedly.
+A: An expression produces a value, while a statement is an instruction for Python to perform an action.
 
-### What is the difference between `if` and `for`?
+**Q: What is an f-string?**
 
-`if` makes a decision.
+A: An f-string is a formatted string that allows expressions or variables to be inserted directly inside a string using curly braces.
 
-`for` repeats an operation.
+**Q: What is the difference between `round()` and `:.2f`?**
 
-### What is a list of dictionaries?
-
-A list containing multiple structured records.
+A: `round()` returns a rounded numeric value, while `:.2f` formats a value for display with exactly two decimal places.
 
 ---
 
 ## 4. Summary — Mistakes & Corrections
 
-### Mistake: Trying to unpack a dictionary directly
+- I learned that values returned by `input()` are strings by default.
+  - Correction: Convert them using `int()` or `float()` when numeric operations are needed.
 
-I tried:
+- I initially needed more clarity about expressions and statements.
+  - Correction: An expression produces a value, while a statement performs an instruction.
 
-```python
-for key, value in customer:
-```
-
-Correction:
-
-```python
-for key, value in customer.items():
-```
-
-### Mistake: Calling `.items()` on a list
-
-Correction:
-
-```python
-for product in products:
-    for key, value in product.items():
-        print(key, value)
-```
-
-### Mistake: Accumulator initialization confusion
-
-I learned:
-
-```python
-total = 0
-```
-
-must be created before:
-
-```python
-total = total + value
-```
-
-### Important Lesson
-
-```text
-Dictionary
-→ one structured record
-
-List of dictionaries
-→ many structured records
-```
+- I learned that `round()` and `:.2f` are related but not identical.
+  - `round()` changes the numeric result.
+  - `:.2f` controls how the result is displayed.
 
 ---
 
-# Day 2 — Lists, Loops & Sales Analysis
+# Day 2 — Lists and Loops
 
 ## 1. What Did I Learn Today?
 
-I learned:
-
-- Lists
-- Indexes
-- `for` loops
-- `sum()`
-- `len()`
-- `max()`
-- `min()`
-- Average calculations
-- Counters
-- List methods
+- Learned what a list is.
+- Learned that lists are ordered collections.
+- Learned that Python list indexes start from `0`.
+- Learned how to access list elements using an index.
+- Learned how `for` loops work.
+- Learned the meaning of iteration.
+- Learned the naming convention:
+  - collection name → plural
+  - loop variable → singular
+- Learned built-in functions:
+  - `sum()`
+  - `len()`
+  - `max()`
+  - `min()`
+- Learned how counters work.
+- Learned common list methods:
+  - `.append()`
+  - `.remove()`
+  - `.insert()`
+  - `.pop()`
 
 ### List
 
-```python
-sales = [1200, 850, 2100, 600]
-```
+A list stores multiple values.
 
-### Index
-
-Indexes start at `0`.
+Example:
 
 ```python
-sales[0]
+sales = [1200, 1500, 2200, 900]
 ```
 
-### For Loop
+### List index
 
 ```python
-for item in collection:
-    statement
+print(sales[0])
 ```
+
+Output:
+
+```text
+1200
+```
+
+Python indexing starts from `0`.
+
+### Loop
+
+```python
+for sale in sales:
+    print(sale)
+```
+
+Literal meaning:
+
+> For each sale inside sales, execute the following code.
+
+### Naming convention
+
+```python
+customers = ["Amina", "Rafi", "Sara"]
+
+for customer in customers:
+    print(customer)
+```
+
+`customers` represents the collection.
+
+`customer` represents one item during each iteration.
 
 ### Counter
 
@@ -1314,269 +275,1939 @@ for sale in sales:
         count = count + 1
 ```
 
+A counter normally starts at `0` because nothing has been counted yet.
+
 ---
 
 ## 2. What Did I Do Today?
 
-I analysed sales data:
+- Created Python lists.
+- Accessed values using indexes.
+- Practiced looping through lists.
+- Calculated totals using `sum()`.
+- Counted items using `len()`.
+- Found highest values using `max()`.
+- Found lowest values using `min()`.
+- Practiced counters with conditions.
+- Added items using `.append()`.
+- Removed items from lists.
+- Practiced changing list contents.
+
+Example:
 
 ```python
-total_sales = sum(sales)
-average_sales = total_sales / len(sales)
+sales = [1200, 1500, 2200, 900]
 
-print(total_sales)
-print(average_sales)
-print(max(sales))
-print(min(sales))
+total = sum(sales)
+number_of_sales = len(sales)
+highest = max(sales)
+lowest = min(sales)
+
+print(total)
+print(number_of_sales)
+print(highest)
+print(lowest)
 ```
-
-I practised list methods:
-
-```python
-sales.append(7000)
-sales.remove(850)
-sales.insert(1, 1000)
-sales.pop(2)
-```
-
-I also updated values using indexes.
 
 ---
 
 ## 3. Interview Questions & Answers
 
-### What is a list?
+**Q: What is a list in Python?**
 
-An ordered collection containing multiple values.
+A: A list is an ordered collection that can store multiple values.
 
-### What is an index?
+**Q: What is an index?**
 
-The numerical position of an item in a list.
+A: An index represents the position of an item inside a collection such as a list.
 
-### What is a `for` loop?
+**Q: What index does a Python list start from?**
 
-A loop that processes items from a collection one at a time.
+A: Python list indexes start from `0`.
 
-### What does `sum()` do?
+**Q: What is a loop?**
 
-Adds numerical values.
+A: A loop repeats a block of code.
 
-### What does `len()` do?
+**Q: What is iteration?**
 
-Returns the number of items.
+A: Iteration is one cycle or repetition of a loop.
 
-### What is a counter?
+**Q: What is a counter?**
 
-A variable used to count occurrences.
-
-### What is a method?
-
-A function associated with an object.
-
-Example:
-
-```python
-sales.append(500)
-```
+A: A counter is a variable used to count how many times something occurs.
 
 ---
 
 ## 4. Summary — Mistakes & Corrections
 
-### Mistake: Confusing indexes and values
+- I needed to remember that Python list indexes start at `0`.
 
-I learned:
+- I learned why counters usually start at `0`.
+  - Before processing anything, zero items have been counted.
+
+- I learned a useful naming convention:
+
+```python
+for customer in customers:
+```
+
+instead of using unclear names.
+
+- I learned that list built-in functions can often simplify calculations.
+
+---
+
+# Day 3 — Dictionaries and Structured Data
+
+## 1. What Did I Learn Today?
+
+- Learned what a dictionary is.
+- Learned key-value pairs.
+- Learned that one dictionary can represent one record.
+- Learned that a list of dictionaries can represent multiple records.
+- Learned how to access dictionary values using keys.
+- Learned how dictionaries and lists can be nested.
+- Learned the difference between:
+  - list access
+  - dictionary access
+  - object access
+  - function calls
+- Learned the difference between a counter and an accumulator.
+
+### Dictionary
+
+A dictionary stores data using key-value pairs.
+
+Example:
+
+```python
+customer = {
+    "name": "Amina",
+    "city": "Helsinki",
+    "sales": 3200
+}
+```
+
+Access:
+
+```python
+print(customer["name"])
+```
+
+### One dictionary = one record
+
+```python
+customer = {
+    "name": "Amina",
+    "city": "Helsinki",
+    "sales": 3200
+}
+```
+
+This can represent one customer record.
+
+### List of dictionaries = multiple records
+
+```python
+customers = [
+    {
+        "name": "Amina",
+        "sales": 3200
+    },
+    {
+        "name": "Rafi",
+        "sales": 1400
+    }
+]
+```
+
+### Access patterns
+
+List:
 
 ```python
 sales[0]
 ```
 
-means the first value.
-
-### Mistake: Expecting `.py` scripts to display expressions automatically
-
-Correction:
-
-Use:
+Dictionary:
 
 ```python
-print(...)
+customer["name"]
 ```
 
-### Mistake: Confusing loop-variable names with indexes
-
-Example:
+Object:
 
 ```python
-for item in sales:
+customer.name
 ```
 
-`item` represents the current value.
-
-### Important Lesson
-
-Lists allow multiple ordered values to be stored and processed using loops.
-
----
-
-# Day 1 — Python Fundamentals & Business Calculations
-
-## 1. What Did I Learn Today?
-
-I learned:
-
-- Variables
-- Strings
-- Integers
-- Floats
-- `input()`
-- Type conversion
-- Arithmetic calculations
-- `if`, `elif`, `else`
-- Comparison operators
-- f-strings
-- `round()`
-- Basic debugging
-
-### Variable
+Function:
 
 ```python
-price = 100
-quantity = 5
+calculate_total(customer)
 ```
 
-### Conditional Statement
+### Dictionary inside a list
 
 ```python
-if subtotal >= 1500:
-    print("Discount applied")
-else:
-    print("No discount")
+print(customers[0]["name"])
 ```
 
-### f-string
+First:
 
 ```python
-print(f"Total: {total:.2f}")
+customers[0]
+```
+
+selects the first dictionary.
+
+Then:
+
+```python
+["name"]
+```
+
+selects the value associated with the `"name"` key.
+
+### List inside a dictionary
+
+```python
+customer = {
+    "name": "Amina",
+    "orders": [100, 200, 300]
+}
+```
+
+Access:
+
+```python
+customer["orders"][0]
 ```
 
 ---
 
 ## 2. What Did I Do Today?
 
-I created a business sales calculator using:
-
-```text
-Product
-↓
-Price
-↓
-Quantity
-↓
-Subtotal
-↓
-Discount
-↓
-Tax
-↓
-Final total
-```
+- Created dictionaries.
+- Accessed dictionary values using keys.
+- Modified existing dictionary values.
+- Added new keys to dictionaries.
+- Created lists of dictionaries.
+- Practiced looping through multiple records.
+- Practiced nested data structures.
 
 Example:
 
 ```python
-subtotal = price * quantity
+customers = [
+    {"name": "Amina", "sales": 3200},
+    {"name": "Rafi", "sales": 1400}
+]
 
-if subtotal >= 1500:
-    discount = subtotal * 0.10
-else:
-    discount = 0
-
-discounted_subtotal = subtotal - discount
-tax = discounted_subtotal * 0.24
-total = discounted_subtotal + tax
-
-print(f"Total: {total:.2f}")
+for customer in customers:
+    print(customer["name"], customer["sales"])
 ```
 
-I also practised delivery conditions and debugging.
+Modified a value:
+
+```python
+customers[1]["sales"] = 2000
+```
+
+Added a new key:
+
+```python
+customers[1]["country"] = "Finland"
+```
 
 ---
 
 ## 3. Interview Questions & Answers
 
-### What is a variable?
+**Q: What is a dictionary in Python?**
 
-A name used to store a value.
+A: A dictionary is a collection that stores data as key-value pairs.
 
-### What is an integer?
+**Q: What is the difference between a list and a dictionary?**
 
-A whole number.
+A: A list normally accesses items by numerical index, while a dictionary accesses values using keys.
 
-### What is a float?
+**Q: What can one dictionary represent in data analysis?**
 
-A number containing a decimal part.
+A: One dictionary can represent one record or row.
 
-### Why do we use `if`?
+**Q: What can a list of dictionaries represent?**
 
-To make decisions based on conditions.
+A: A list of dictionaries can represent multiple structured records.
 
-### Why do we use `int()` or `float()` with `input()`?
+**Q: What is the difference between a counter and an accumulator?**
 
-Because `input()` returns text, while numerical calculations require numerical data types.
-
-### What is an f-string?
-
-A formatted string that allows variables and expressions to be inserted into text.
-
-### Why can floating-point calculations show unexpected decimal digits?
-
-Because computers represent many decimal values approximately in binary.
+A: A counter counts occurrences, while an accumulator collects or adds values over time.
 
 ---
 
 ## 4. Summary — Mistakes & Corrections
 
-### Mistake: Using variables before defining them
+- I initially tried to think about dictionary access like list indexing.
 
-This caused:
+Incorrect idea:
+
+```python
+customers[1][2]
+```
+
+when the dictionary uses string keys.
+
+Correct:
+
+```python
+customers[1]["sales"]
+```
+
+- I learned to identify the structure first:
+  - list → use index
+  - dictionary → use key
+  - object → use attribute
+  - function → call using parentheses
+
+- I learned the important data connection:
 
 ```text
-NameError
+List = many items
+Dictionary = one structured record
+List of dictionaries = many structured records
+```
+
+This later connects naturally with CSV, JSON, pandas, and SQL tables.
+
+---
+
+# Day 4 — Functions, Parameters, Return and Scope
+
+## 1. What Did I Learn Today?
+
+- Learned what a function is.
+- Learned how to define functions using `def`.
+- Learned parameters.
+- Learned arguments.
+- Learned `return`.
+- Learned local variables.
+- Learned variable scope.
+- Learned why functions help organize reusable logic.
+
+### Function
+
+A function is a reusable block of code designed to perform a specific task.
+
+Example:
+
+```python
+def calculate_total(customer):
+    total = sum(customer["orders"])
+    return total
+```
+
+### Parameter
+
+In:
+
+```python
+def calculate_total(customer):
+```
+
+`customer` is a parameter.
+
+A parameter is a placeholder that receives data when the function is called.
+
+### Argument
+
+In:
+
+```python
+calculate_total(customers[0])
+```
+
+`customers[0]` is the argument.
+
+An argument is the actual value supplied to the function.
+
+### Return
+
+```python
+return total
+```
+
+`return` sends a value from the function back to the place where the function was called.
+
+### Scope
+
+Scope defines the region where a variable can be accessed.
+
+Example:
+
+```python
+def calculate_total(customer):
+    total = sum(customer["orders"])
+    return total
+```
+
+`total` is a local variable.
+
+Normally it can only be accessed inside the function.
+
+But its value can be sent outside using:
+
+```python
+return total
+```
+
+---
+
+## 2. What Did I Do Today?
+
+- Created functions.
+- Passed dictionaries into functions.
+- Used parameters.
+- Used arguments.
+- Returned calculated values.
+- Called functions inside loops.
+- Practiced separating reusable logic from repeated loops.
+
+Example:
+
+```python
+def calculate_total(customer):
+    total = sum(customer["orders"])
+    return total
+
+
+for customer in customers:
+    total = calculate_total(customer)
+    print(customer["name"], total)
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: What is a function?**
+
+A: A function is a reusable block of code that performs a specific task.
+
+**Q: What is a parameter?**
+
+A: A parameter is a variable defined in a function definition that receives data when the function is called.
+
+**Q: What is an argument?**
+
+A: An argument is the actual value passed to a function.
+
+**Q: What is the difference between a parameter and an argument?**
+
+A: A parameter is the placeholder in the function definition, while an argument is the actual value supplied during the function call.
+
+**Q: What does `return` do?**
+
+A: `return` sends a value from a function back to the place where the function was called.
+
+**Q: What is scope?**
+
+A: Scope defines the region where a variable can be accessed.
+
+**Q: What is a local variable?**
+
+A: A local variable is a variable created inside a function and normally accessible only inside that function.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I initially found parameter selection difficult.
+
+A useful question is:
+
+> What information does this function need to do its job?
+
+That information usually becomes the parameter.
+
+- I learned that functions should normally be defined once and then called when needed.
+
+Instead of defining a function repeatedly inside a loop:
+
+```python
+def calculate_total(customer):
+    return sum(customer["orders"])
+
+for customer in customers:
+    total = calculate_total(customer)
+```
+
+- I learned that `return` sends the value, not the local variable itself.
+
+---
+
+# Day 5 — Nested Data and Nested Loops
+
+## 1. What Did I Learn Today?
+
+- Learned nested data structures.
+- Learned nested loops.
+- Learned the difference between separate loops and nested loops.
+- Learned when an inner loop is necessary.
+- Learned when built-in functions can replace explicit loops.
+- Learned that functions and loops solve different problems.
+
+### Nested loop
+
+A nested loop is a loop inside another loop.
+
+Example:
+
+```python
+for customer in customers:
+    for order in customer["orders"]:
+        print(customer["name"], order)
+```
+
+The outer loop processes customers.
+
+The inner loop processes each customer's individual orders.
+
+### Main decision rule
+
+If I need every individual item from an inner collection, I may need an inner loop.
+
+Example:
+
+```python
+for customer in customers:
+    for order in customer["orders"]:
+        print(order)
+```
+
+But if I only need a total:
+
+```python
+for customer in customers:
+    total = sum(customer["orders"])
+```
+
+I do not need to write an explicit inner loop.
+
+### Separate loops
+
+These are two separate loops:
+
+```python
+for customer in customers:
+    print(customer["name"])
+
+for customer in customers:
+    print(customer["city"])
+```
+
+The first loop finishes completely before the second loop starts.
+
+### Nested loops
+
+```python
+for customer in customers:
+    for order in customer["orders"]:
+        print(order)
+```
+
+The inner loop runs while the outer loop is processing each customer.
+
+---
+
+## 2. What Did I Do Today?
+
+- Practiced dictionaries containing lists.
+- Practiced lists containing dictionaries.
+- Practiced nested loops.
+- Calculated totals from inner lists.
+- Compared explicit loops with built-in functions.
+- Practiced deciding whether an inner loop was necessary.
+
+Example:
+
+```python
+customers = [
+    {
+        "name": "Amina",
+        "orders": [100, 200, 300]
+    },
+    {
+        "name": "Rafi",
+        "orders": [400, 500]
+    }
+]
+
+for customer in customers:
+    total = sum(customer["orders"])
+    print(customer["name"], total)
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: What is a nested loop?**
+
+A: A nested loop is a loop inside another loop.
+
+**Q: When do we need a nested loop?**
+
+A: A nested loop is useful when we need to process individual items inside another collection.
+
+**Q: Do we always need an inner loop for a list inside a dictionary?**
+
+A: No. If we only need an aggregate such as `sum()`, `max()`, `min()`, or `len()`, a built-in function may remove the need for an explicit inner loop.
+
+**Q: What is the difference between separate loops and nested loops?**
+
+A: Separate loops run one after another. In nested loops, one loop runs inside another loop.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I initially thought nested data automatically required nested loops.
+  - Correction: The required operation determines whether an inner loop is necessary.
+
+- I learned this rule:
+
+> If I need each individual item, use an inner loop.
+
+- I learned that built-in functions such as:
+
+```python
+sum()
+max()
+min()
+len()
+```
+
+can sometimes replace an explicit loop.
+
+- I learned that a function does not automatically replace a nested loop.
+  - Functions organize reusable logic.
+  - Loops control repetition.
+
+---
+
+# Day 6 — File Handling
+
+## 1. What Did I Learn Today?
+
+- Learned how to open files in Python.
+- Learned the `with open()` pattern.
+- Learned file modes:
+  - `"r"` — read
+  - `"w"` — write
+  - `"a"` — append
+- Learned `.read()`.
+- Learned `.write()`.
+- Learned `.strip()`.
+- Learned newline character `\n`.
+- Learned why `with open()` is useful.
+- Learned the difference between:
+  - object methods
+  - module functions
+
+### Opening a file
+
+```python
+with open("filename.txt", "r") as file:
+    content = file.read()
+```
+
+### Literal meaning
+
+```python
+with open("filename.txt", "r") as file:
+```
+
+means:
+
+> Open the file in read mode and temporarily refer to the opened file object using the name `file`.
+
+### Reading
+
+```python
+content = file.read()
+```
+
+`file.read()` reads the opened file contents as raw text.
+
+### Writing
+
+```python
+with open("report.txt", "w") as file:
+    file.write("Sales report")
+```
+
+### Append
+
+```python
+with open("report.txt", "a") as file:
+    file.write("\nNew report line")
+```
+
+### `.strip()`
+
+```python
+text = "  Python  "
+clean_text = text.strip()
+```
+
+`.strip()` removes leading and trailing whitespace.
+
+---
+
+## 2. What Did I Do Today?
+
+- Created text files.
+- Opened files in read mode.
+- Read file contents.
+- Wrote data into files.
+- Appended new data.
+- Practiced handling newline characters.
+- Practiced cleaning text using `.strip()`.
+- Connected file handling with future CSV processing.
+
+Example:
+
+```python
+with open("customer_report.txt", "r") as file:
+    content = file.read()
+
+print(content)
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: What does `open()` do?**
+
+A: `open()` opens a file and returns a file object.
+
+**Q: Why use `with open()`?**
+
+A: `with open()` manages the file safely and automatically closes it when the block finishes.
+
+**Q: What does `"r"` mean?**
+
+A: `"r"` means read mode.
+
+**Q: What does `"w"` mean?**
+
+A: `"w"` means write mode. It writes to the file and can replace existing contents.
+
+**Q: What does `"a"` mean?**
+
+A: `"a"` means append mode. It adds new content to the end of the file.
+
+**Q: What does `file.read()` do?**
+
+A: It reads the contents of an opened file as raw text.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I needed to distinguish between opening a file and interpreting its data.
+
+`open()` gives access to the file.
+
+```python
+file.read()
+```
+
+reads raw text.
+
+Later, CSV tools can interpret that file as structured CSV data.
+
+- I learned the syntax difference:
+
+Object method:
+
+```python
+object.method()
+```
+
+Example:
+
+```python
+file.read()
+```
+
+Module function:
+
+```python
+module.function(argument)
+```
+
+Example:
+
+```python
+csv.reader(file)
+```
+
+---
+
+# Day 7 — CSV Files and Structured Data
+
+## 1. What Did I Learn Today?
+
+- Learned what CSV means.
+- Learned CSV structure:
+  - header
+  - row / record
+  - column
+- Learned `import csv`.
+- Learned `csv.reader()`.
+- Learned `csv.DictReader()`.
+- Learned how to skip headers using `next()`.
+- Learned that CSV values are initially strings.
+- Learned type conversion for CSV values.
+- Learned basic CSV writing.
+- Connected CSV data with lists and dictionaries.
+- Learned the difference between raw file reading and CSV parsing.
+
+### CSV
+
+CSV means:
+
+> Comma-Separated Values
+
+Example:
+
+```csv
+name,city,sales
+Amina,Helsinki,3200
+Rafi,Espoo,1400
+Bob,Vantaa,4300
+```
+
+### Importing CSV module
+
+```python
+import csv
+```
+
+This imports Python's built-in CSV module.
+
+It does not import a CSV file.
+
+### `csv.reader()`
+
+```python
+import csv
+
+with open("sales.csv", "r") as file:
+    reader = csv.reader(file)
+
+    next(reader)
+
+    for row in reader:
+        print(row)
+```
+
+`csv.reader()` normally represents each row as a list.
+
+### `csv.DictReader()`
+
+```python
+import csv
+
+with open("sales.csv", "r") as file:
+    reader = csv.DictReader(file)
+
+    for row in reader:
+        print(row["name"])
+        print(row["sales"])
+```
+
+`csv.DictReader()` uses the CSV header as dictionary keys.
+
+Example row:
+
+```python
+{
+    "name": "Amina",
+    "city": "Helsinki",
+    "sales": "3200"
+}
+```
+
+### CSV values are strings
+
+Even though the CSV contains:
+
+```text
+3200
+```
+
+Python initially reads it as:
+
+```python
+"3200"
+```
+
+Therefore:
+
+```python
+sale = int(row["sales"])
+```
+
+converts it into an integer.
+
+### CSV writer
+
+```python
+with open("report.csv", "w") as file:
+    writer = csv.writer(file)
+    writer.writerow(["name", "sales"])
+```
+
+---
+
+## 2. What Did I Do Today?
+
+- Opened CSV files.
+- Used `csv.reader()`.
+- Used `next(reader)` to skip headers.
+- Used `csv.DictReader()`.
+- Accessed CSV columns using keys.
+- Converted numeric strings to integers.
+- Used loops to process CSV rows.
+- Stored values from CSV files inside Python lists.
+- Practiced writing CSV rows.
+- Connected CSV data with previous list and dictionary knowledge.
+
+Example:
+
+```python
+import csv
+
+with open("sales.csv", "r") as file:
+    reader = csv.DictReader(file)
+
+    for row in reader:
+        sale = int(row["sales"])
+
+        print(row["name"], sale)
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: What does CSV stand for?**
+
+A: CSV stands for Comma-Separated Values.
+
+**Q: What is a CSV file?**
+
+A: A CSV file is a text-based format commonly used to store tabular data.
+
+**Q: What does `import csv` do?**
+
+A: It imports Python's built-in CSV module.
+
+**Q: What is the difference between `file.read()` and `csv.reader(file)`?**
+
+A: `file.read()` reads raw text, while `csv.reader(file)` interprets the file as CSV rows.
+
+**Q: What is the difference between `csv.reader()` and `csv.DictReader()`?**
+
+A: `csv.reader()` normally returns rows as lists, while `csv.DictReader()` returns rows as dictionaries using header names as keys.
+
+**Q: Why do we use `int(row["sales"])`?**
+
+A: CSV values are read as strings, so `int()` converts a numeric string into an integer.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I initially thought there might be:
+
+```python
+csv.read()
 ```
 
 Correction:
 
-Define the variable first.
+Raw file reading:
 
-### Mistake: Syntax errors
+```python
+file.read()
+```
+
+CSV parsing:
+
+```python
+csv.reader(file)
+```
+
+or:
+
+```python
+csv.DictReader(file)
+```
+
+- I needed to understand why:
+
+```python
+print(row["sales"])
+```
+
+prints many sales values.
 
 Correction:
 
-Check punctuation, quotes and Python syntax carefully.
+`row["sales"]` returns one sales value for the current row, but the `for` loop repeats once for every row.
 
-### Mistake: Indentation errors
-
-Correction:
-
-Code inside conditional blocks must be indented consistently.
-
-### Mistake: Expecting dependent values to update automatically in REPL
-
-Changing one variable does not automatically recalculate another variable.
-
-The calculation must be executed again.
-
-### Important Lesson
-
-The basic program flow I learned was:
+- I learned this connection:
 
 ```text
-Input
-↓
-Calculation
-↓
-Decision
-↓
-Output
+CSV row
+    ↓
+DictReader
+    ↓
+Python dictionary
 ```
+
+---
+
+# Extra Practice — Classes, Objects and OOP Basics
+
+## 1. What Did I Learn Today?
+
+- Learned the basic concept of Object-Oriented Programming.
+- Learned what a class is.
+- Learned what an object is.
+- Learned what an instance is.
+- Learned what `__init__` does.
+- Learned what `self` means.
+- Learned what attributes are.
+- Learned what methods are.
+- Learned class naming conventions.
+- Connected classes with `csv.DictReader`.
+
+### Class
+
+A class is a blueprint for creating objects.
+
+Example:
+
+```python
+class Customer:
+    pass
+```
+
+Class names normally use PascalCase:
+
+```python
+Customer
+SalesReport
+BankAccount
+```
+
+### Object / Instance
+
+An object is an actual item created from a class.
+
+Example:
+
+```python
+customer1 = Customer()
+```
+
+`customer1` is an object or instance of `Customer`.
+
+### `__init__`
+
+Example:
+
+```python
+class Customer:
+
+    def __init__(self, name):
+        self.name = name
+```
+
+`__init__` is a special initialization method that runs when an object is created.
+
+### `self`
+
+`self` represents the current object.
+
+Example:
+
+```python
+self.name = name
+```
+
+This stores the supplied `name` value as an attribute of the current object.
+
+### Attribute
+
+```python
+customer1.name
+```
+
+`name` is an attribute.
+
+An attribute stores data related to an object.
+
+### Method
+
+A method is a function defined inside a class.
+
+Example:
+
+```python
+class Customer:
+
+    def greet(self):
+        print("Hello")
+```
+
+`greet()` is a method.
+
+### Connection with `csv.DictReader`
+
+```python
+reader = csv.DictReader(file)
+```
+
+`DictReader` is a class from Python's `csv` module.
+
+The expression:
+
+```python
+csv.DictReader(file)
+```
+
+creates a `DictReader` object or instance.
+
+Then:
+
+```python
+reader
+```
+
+stores a reference to that object.
+
+---
+
+## 2. What Did I Do Today?
+
+- Created simple classes.
+- Created objects from classes.
+- Practiced `__init__`.
+- Practiced `self`.
+- Created object attributes.
+- Practiced methods.
+- Connected OOP concepts with previously used Python tools such as `csv.DictReader`.
+
+Example:
+
+```python
+class Customer:
+
+    def __init__(self, name, city):
+        self.name = name
+        self.city = city
+
+
+customer1 = Customer("Amina", "Helsinki")
+
+print(customer1.name)
+print(customer1.city)
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: What is a class?**
+
+A: A class is a blueprint used to create objects.
+
+**Q: What is an object?**
+
+A: An object is an instance created from a class.
+
+**Q: What is an instance?**
+
+A: An instance is a specific object created from a class.
+
+**Q: What is `__init__`?**
+
+A: `__init__` is a special initialization method that runs when an object is created.
+
+**Q: What does `self` represent?**
+
+A: `self` represents the current object or instance.
+
+**Q: What is an attribute?**
+
+A: An attribute is data associated with an object.
+
+**Q: What is a method?**
+
+A: A method is a function defined inside a class.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I initially needed clarity about the difference between class and object.
+
+Correction:
+
+```text
+Class = blueprint
+Object = actual instance created from the blueprint
+```
+
+- I learned that:
+
+```python
+csv.DictReader
+```
+
+is a class.
+
+And:
+
+```python
+reader = csv.DictReader(file)
+```
+
+creates an instance.
+
+- I learned that object data is normally accessed using dot notation:
+
+```python
+customer.name
+```
+
+while dictionary values are accessed using keys:
+
+```python
+customer["name"]
+```
+
+---
+
+# Extra Practice — Variable Initialization and State
+
+## 1. What Did I Learn Today?
+
+- Learned what initialization means.
+- Learned the difference between initialization and reassignment.
+- Learned why some variables must be created before a loop.
+- Learned how variables can preserve state between loop iterations.
+- Learned why `lowest_sale = 0` is not always a good initialization strategy.
+- Learned how to initialize lowest/highest values using real data.
+
+### Initialization
+
+Initialization means assigning a variable its first starting value.
+
+Example:
+
+```python
+total_sales = 0
+```
+
+### Update / Reassignment
+
+```python
+total_sales = total_sales + sale
+```
+
+This updates an existing value.
+
+### Counter initialization
+
+```python
+count = 0
+```
+
+The counter starts at zero because no records have been processed yet.
+
+### Current item
+
+A variable representing the current item normally belongs inside the loop.
+
+Example:
+
+```python
+for row in reader:
+    sale = int(row["sales"])
+```
+
+`sale` changes during each iteration.
+
+### Persistent state
+
+Variables that must remember information between loop iterations normally need to exist outside or be initialized before repeated updates.
+
+Example:
+
+```python
+total_sales = 0
+
+for row in reader:
+    sale = int(row["sales"])
+    total_sales = total_sales + sale
+```
+
+### Lowest sale problem
+
+This can be unreliable:
+
+```python
+lowest_sale = 0
+```
+
+if all real sales values are positive.
+
+A better learning pattern is to use the first real value:
+
+```python
+count = count + 1
+
+if count == 1:
+    lowest_sale = sale
+
+elif sale < lowest_sale:
+    lowest_sale = sale
+```
+
+---
+
+## 2. What Did I Do Today?
+
+- Practiced counters.
+- Practiced accumulators.
+- Practiced variable initialization.
+- Practiced updating variables inside loops.
+- Practiced highest and lowest value logic.
+- Connected initialization with CSV record processing.
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: What is variable initialization?**
+
+A: Initialization means assigning the first starting value to a variable.
+
+**Q: What is reassignment?**
+
+A: Reassignment means assigning a new value to a variable that already exists.
+
+**Q: Why are counters usually initialized before a loop?**
+
+A: Because the counter needs to preserve its value across multiple loop iterations.
+
+**Q: Why can initializing a lowest value to `0` be a problem?**
+
+A: If all real values are positive, none of them may be lower than zero, so the result would be incorrect.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I initially wondered why some variables were created before loops while others were created inside loops.
+
+Correction:
+
+Current-item values can normally be created inside the loop:
+
+```python
+sale = int(row["sales"])
+```
+
+Persistent state normally exists before repeated updates:
+
+```python
+count = 0
+total = 0
+```
+
+- I learned that initialization should make logical sense for the data.
+
+---
+
+# Portfolio Project 01 — Sales Data Analysis
+
+## 1. What Did I Learn Today?
+
+- Learned how previously studied Python concepts work together in a real project.
+- Connected:
+  - file handling
+  - CSV
+  - dictionaries
+  - lists
+  - loops
+  - conditions
+  - functions
+  - parameters
+  - arguments
+  - return values
+  - scope
+  - counters
+  - type conversion
+  - built-in functions
+- Learned how to calculate business-style metrics from CSV data.
+- Learned the difference between manual accumulator logic and using Python built-in functions.
+- Learned how a function parameter and argument can use different variable names.
+- Learned the difference between a function definition and a decorator.
+- Learned basic Git and GitHub workflow for a portfolio project.
+
+### Project data
+
+```csv
+name,city,sales
+Amina,Helsinki,3200
+Rafi,Espoo,1400
+Bob,Vantaa,4300
+Sara,Tampere,2700
+Mika,Turku,5100
+```
+
+### Expected analysis
+
+```text
+Sales: [3200, 1400, 4300, 2700, 5100]
+
+Total sales: 16700
+
+Average sales: 3340.0
+
+Lowest sale:
+Rafi — 1400
+
+Highest sale:
+Mika — 5100
+
+Sales above 3000:
+3
+```
+
+### Custom average function
+
+```python
+def average_sales(total_sales, number_of_sellers):
+    average = total_sales / number_of_sellers
+    return average
+```
+
+Function parameters:
+
+```python
+total_sales
+number_of_sellers
+```
+
+When calling:
+
+```python
+average_sales(total, sellers)
+```
+
+the arguments are:
+
+```python
+total
+sellers
+```
+
+The names do not need to match.
+
+### Reading the CSV
+
+```python
+with open("sales.csv", "r") as file:
+    reader = csv.DictReader(file)
+```
+
+### Collecting sales
+
+```python
+sales = []
+
+for row in reader:
+    sale = int(row["sales"])
+    sales.append(sale)
+```
+
+### Calculations
+
+```python
+total = sum(sales)
+sellers = len(sales)
+lowest_sale = min(sales)
+highest_sale = max(sales)
+```
+
+### Counting sales above 3000
+
+```python
+count = 0
+
+for sale in sales:
+    if sale > 3000:
+        count = count + 1
+```
+
+### Average
+
+```python
+average_sales(total, sellers)
+```
+
+---
+
+## 2. What Did I Do Today?
+
+- Built my first complete Python portfolio project.
+- Created a CSV dataset.
+- Read the CSV using `csv.DictReader`.
+- Converted sales strings into integers.
+- Stored sales values inside a list.
+- Calculated total sales.
+- Calculated average sales.
+- Found minimum sales.
+- Found maximum sales.
+- Identified lowest seller.
+- Identified highest seller.
+- Counted sales greater than 3000.
+- Created a reusable average function.
+- Printed formatted analysis results.
+- Created a dedicated local portfolio project folder.
+- Created a Git repository.
+- Added files to Git.
+- Created the first commit.
+- Created a GitHub repository.
+- Connected the local repository with GitHub.
+- Successfully pushed the portfolio project to GitHub.
+
+Project files:
+
+```text
+README.md
+portfolio_01_sales_data_analysis.py
+sales.csv
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: Why use `csv.DictReader` for this project?**
+
+A: `csv.DictReader` allows CSV columns to be accessed by their header names, which makes the code easier to read and understand.
+
+**Q: Why convert `row["sales"]` to an integer?**
+
+A: CSV values are initially strings, so numeric calculations require conversion.
+
+Example:
+
+```python
+sale = int(row["sales"])
+```
+
+**Q: Why store sales in a list?**
+
+A: Storing the values in a list makes it easy to use built-in functions such as `sum()`, `len()`, `min()`, and `max()`.
+
+**Q: Why create a function for average sales?**
+
+A: The function organizes the calculation as reusable logic and demonstrates parameters, arguments, return values, and scope.
+
+**Q: Do function parameter names and argument variable names need to match?**
+
+A: No. The parameter receives the value supplied by the argument regardless of whether their variable names are the same.
+
+Example:
+
+```python
+def average_sales(total_sales, number_of_sellers):
+    return total_sales / number_of_sellers
+```
+
+Call:
+
+```python
+average_sales(total, sellers)
+```
+
+**Q: What is the difference between a function definition and a decorator?**
+
+A: A function definition creates a function using `def`. A decorator is a separate Python feature used to modify or extend the behaviour of functions or classes.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I initially confused a function definition with a decorator.
+  - Correction: `def` defines a function. A decorator is a different concept.
+
+- I initially thought the parameter and argument variable names might need to match.
+  - Correction: They can have different names.
+
+Example:
+
+```python
+def average_sales(total_sales, number_of_sellers):
+    return total_sales / number_of_sellers
+
+average_sales(total, sellers)
+```
+
+- I learned that CSV values must be converted before mathematical calculations.
+
+```python
+sale = int(row["sales"])
+```
+
+- I learned that the project currently assumes sales data exists.
+  - Future versions can add validation and error handling.
+
+- I learned that tied minimum or maximum values may require additional logic if multiple sellers have exactly the same sales.
+
+- I learned the value of building projects:
+  - isolated Python concepts became easier to understand when connected together.
+
+---
+
+# Git and GitHub — Project Workflow
+
+## 1. What Did I Learn Today?
+
+- Learned the difference between Git and GitHub.
+- Learned what a Git repository is.
+- Learned `git init`.
+- Learned `git status`.
+- Learned staging with `git add`.
+- Learned commits.
+- Learned remote repositories.
+- Learned `origin`.
+- Learned `git push`.
+- Learned branch tracking.
+- Learned how to separate learning repositories from portfolio repositories.
+
+### Git initialization
+
+```bash
+git init
+```
+
+This creates a Git repository inside the current project folder.
+
+### Check status
+
+```bash
+git status
+```
+
+### Stage files
+
+```bash
+git add .
+```
+
+### Commit
+
+```bash
+git commit -m "Add first sales data analysis portfolio project"
+```
+
+### Connect GitHub repository
+
+```bash
+git remote add origin https://github.com/USERNAME/REPOSITORY.git
+```
+
+### Push
+
+```bash
+git push -u origin main
+```
+
+The `-u` connects the local `main` branch with the remote `origin/main` branch for future pushes.
+
+After that, future updates normally use:
+
+```bash
+git add .
+git commit -m "Describe the update"
+git push
+```
+
+---
+
+## 2. What Did I Do Today?
+
+- Initialized the project repository using:
+
+```bash
+git init
+```
+
+- Checked files using:
+
+```bash
+git status
+```
+
+- Staged project files:
+
+```bash
+git add .
+```
+
+- Created the first commit:
+
+```bash
+git commit -m "Add first sales data analysis portfolio project"
+```
+
+- Connected the local repository with GitHub.
+- Successfully pushed the `main` branch to GitHub.
+
+---
+
+## 3. Interview Questions & Answers
+
+**Q: What is Git?**
+
+A: Git is a distributed version control system used to track changes in files and code.
+
+**Q: What is GitHub?**
+
+A: GitHub is an online platform used to host and collaborate on Git repositories.
+
+**Q: What does `git init` do?**
+
+A: `git init` creates a new Git repository in the current directory.
+
+**Q: What does `git add` do?**
+
+A: `git add` moves file changes into the staging area for the next commit.
+
+**Q: What is a commit?**
+
+A: A commit is a saved snapshot of staged changes in Git history.
+
+**Q: What is `origin`?**
+
+A: `origin` is the conventional name used for the main remote Git repository.
+
+**Q: What does `git push` do?**
+
+A: `git push` sends local commits to a remote repository such as GitHub.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+- I learned that `git init` should not be repeated every time I modify the same project.
+
+For an existing repository, the normal workflow is:
+
+```bash
+git add .
+git commit -m "Describe the update"
+git push
+```
+
+- I learned that a completely new meaningful project can have its own repository.
+
+- I learned that daily practice and learning notes can remain inside my `T2` repository.
+
+- Finished portfolio projects can have separate repositories.
+
+My current structure is conceptually:
+
+```text
+T2
+└── Learning, practice, exercises and notes
+
+Portfolio
+└── Separate finished projects
+```
+
+This keeps learning history and recruiter-facing portfolio projects organized separately.
+
+---
+
+# Current Learning Position
+
+So far, I have studied and practiced:
+
+```text
+Python Fundamentals
+        ↓
+Variables and Data Types
+        ↓
+Conditions
+        ↓
+Lists
+        ↓
+Loops
+        ↓
+Dictionaries
+        ↓
+Functions
+        ↓
+Parameters and Arguments
+        ↓
+Return and Scope
+        ↓
+Nested Data
+        ↓
+Nested Loops
+        ↓
+File Handling
+        ↓
+CSV
+        ↓
+DictReader
+        ↓
+Classes and Objects
+        ↓
+Variable Initialization
+        ↓
+Practical Sales Data Analysis Project
+        ↓
+Git and GitHub
+```
+
+The most important connection I have learned is:
+
+```text
+List
+= many values
+
+Dictionary
+= one structured record
+
+List of Dictionaries
+= many structured records
+
+CSV
+= tabular data stored in a file
+
+csv.DictReader
+= converts CSV rows into dictionary-like records
+
+Functions
+= reusable logic
+
+Loops
+= repetition
+
+return
+= sends a result from a function
+
+Scope
+= determines where variables can be accessed
+```
+
+These concepts create the foundation for future work with:
+
+```text
+Python
+SQL
+pandas
+Data Cleaning
+Data Analysis
+Power BI
+APIs
+JSON
+Databases
+ETL / ELT
+Data Engineering
+```
+
+---
+
+# Portfolio Progress
+
+## Project 01 — Sales Data Analysis
+
+Completed first version.
+
+Technologies and concepts used:
+
+```text
+Python
+CSV
+csv.DictReader
+Lists
+Dictionaries
+Loops
+Conditions
+Functions
+Parameters
+Arguments
+Return
+Scope
+Type Conversion
+Counters
+sum()
+len()
+min()
+max()
+round()
+Git
+GitHub
+```
+
+Future improvements may include:
+
+```text
+Data validation
+Error handling
+Data cleaning
+Additional KPIs
+pandas
+Data visualization
+SQL
+Power BI
+```
+
+---
+
+# Learning Principle
+
+My current focus is not only memorizing Python syntax.
+
+The goal is to understand:
+
+```text
+What does this code mean?
+
+Why is it used?
+
+Where should it be used?
+
+How does it connect with concepts I already know?
+
+How will it connect with real data work later?
+```
+
+This learning diary documents that progression.

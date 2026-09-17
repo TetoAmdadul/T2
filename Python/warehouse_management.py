@@ -6,6 +6,16 @@ products = [
       {"product_name": "SSD", "price": 400, "quantity": 10},
       {"product_name": "Monitor", "price": 300, "quantity": 90}, 
 ]
+"""
+#for printing all the keys and pair in one dictonaries
+for key, value in product.items():
+    print(key, value)
+"""
+for product in products:
+    print(product)
+    for key, value in product.items():
+        print(key, value)
+
 
 total_inventory_value = 0
 
