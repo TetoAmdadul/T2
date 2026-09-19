@@ -2211,3 +2211,1770 @@ How will it connect with real data work later?
 ```
 
 This learning diary documents that progression.
+## 1. What Did I Learn Today?
+
+Today I learned how Python exception handling, HTTP APIs, Ollama, a local LLM, and my Python modules connect together as one complete system.
+
+The most important lesson was not only how to write the code, but also understanding:
+
+```text
+What is this component?
+Why do I need it?
+Where does it sit in the system?
+What goes into it?
+What comes out of it?
+How does it connect to the other components?
+```
+
+---
+
+### The Complete System I Built
+
+My AI Sales Report Assistant works like this:
+
+```text
+sales.csv
+    ↓
+sales_analyzer.py
+    ↓
+Python dictionary containing calculated facts
+    ↓
+prompt_builder.py
+    ↓
+Text prompt
+    ↓
+llm_client.py
+    ↓
+requests library
+    ↓
+HTTP POST request
+    ↓
+Ollama API endpoint
+    ↓
+Ollama
+    ↓
+Qwen model
+    ↓
+Generated text
+    ↓
+Ollama API response
+    ↓
+llm_client.py
+    ↓
+app.py
+    ↓
+Terminal output
+```
+
+This helped me understand that each component has a different responsibility.
+
+---
+
+### What Is Qwen?
+
+Qwen is the actual Large Language Model used in my project.
+
+My model is:
+
+```text
+qwen3.5:4b
+```
+
+Qwen is responsible for understanding the prompt and generating the management report.
+
+Conceptually:
+
+```text
+Prompt
+    ↓
+Qwen
+    ↓
+Generated language
+```
+
+Qwen is not:
+
+```text
+Python
+requests library
+API client
+Ollama
+```
+
+Qwen is the actual AI model performing the language-generation work.
+
+---
+
+### What Is Ollama?
+
+Ollama is not the LLM itself.
+
+Ollama is software used to run and manage LLMs locally.
+
+In my project:
+
+```text
+Ollama
+→ runs/manages the local model
+
+Qwen
+→ actual model that generates the text
+```
+
+When I use:
+
+```bash
+ollama run qwen3.5:4b
+```
+
+the relationship is conceptually:
+
+```text
+Ollama
+    ↓
+Loads/runs Qwen
+    ↓
+Qwen becomes available for use
+```
+
+Ollama also provides a local API so that programs such as my Python application can communicate with the model.
+
+---
+
+### Why Did I Install Ollama?
+
+Python cannot automatically communicate with a downloaded LLM just because a model file exists.
+
+I needed software that could:
+
+```text
+Manage the model
+Run the model
+Receive requests
+Send prompts to the model
+Return generated responses
+```
+
+Ollama provides that layer.
+
+So the architecture becomes:
+
+```text
+Python Application
+        ↓
+Ollama
+        ↓
+Qwen Model
+```
+
+Without something like Ollama, I would need another way to load and serve the model.
+
+---
+
+### Why Did I Download Qwen?
+
+Installing Ollama does not mean the actual language model is already available.
+
+The model must also be downloaded.
+
+For this project I downloaded:
+
+```text
+qwen3.5:4b
+```
+
+The model contains the trained parameters that perform the language-generation work.
+
+The relationship is:
+
+```text
+Ollama
+→ software/runtime
+
+Qwen
+→ actual trained AI model
+```
+
+---
+
+### Why Is a Local Model Large?
+
+Large Language Models contain many trained parameters.
+
+The model files have to exist somewhere.
+
+With a local LLM:
+
+```text
+Model files
+→ stored on my own computer
+```
+
+With a cloud LLM:
+
+```text
+Model files
+→ stored on the provider's servers
+```
+
+Therefore, a local model uses:
+
+```text
+My disk space
+My memory
+My CPU/GPU resources
+My electricity
+```
+
+while a cloud provider uses its own infrastructure.
+
+---
+
+### What Is the API in My Project?
+
+The API is not `llm_client.py`.
+
+The API is the interface exposed by Ollama.
+
+My project uses this endpoint:
+
+```text
+http://localhost:11434/api/generate
+```
+
+Breakdown:
+
+```text
+http
+→ communication protocol
+
+localhost
+→ my own computer
+
+11434
+→ port where the Ollama service is available
+
+/api/generate
+→ specific endpoint used for text generation
+```
+
+The API provides a defined way for my Python application to communicate with Ollama.
+
+---
+
+### What Is an API Endpoint?
+
+An endpoint is a specific address for a particular API operation.
+
+For example:
+
+```text
+/api/generate
+```
+
+is used for generation.
+
+Conceptually:
+
+```text
+Server
+    ↓
+API
+    ↓
+Specific endpoint
+```
+
+The endpoint tells the client where a particular request should be sent.
+
+---
+
+### What Is `llm_client.py`?
+
+`llm_client.py` is not the API.
+
+It is my API client module.
+
+Its responsibility is:
+
+```text
+Know where to send the request
+Create the request
+Send the request
+Receive the response
+Handle API-related errors
+Return the generated result
+```
+
+Conceptually:
+
+```text
+llm_client.py
+→ client-side code
+
+Ollama API
+→ server-side interface
+```
+
+---
+
+### What Is the `requests` Library?
+
+I use:
+
+```python
+import requests
+```
+
+`requests` is a Python library for sending HTTP requests.
+
+It does not run the LLM.
+
+It does not generate the report.
+
+Its job is communication.
+
+Conceptually:
+
+```text
+Python
+    ↓
+requests
+    ↓
+HTTP request
+    ↓
+Server/API
+```
+
+In my project:
+
+```python
+response = requests.post(
+    url,
+    json=payload,
+    timeout=30
+)
+```
+
+means:
+
+```text
+Send this data
+→ to this URL
+→ using HTTP POST
+→ wait up to the configured timeout
+```
+
+---
+
+### What Is the Payload?
+
+The payload is the data I send to the API.
+
+Example:
+
+```python
+payload = {
+    "model": "qwen3.5:4b",
+    "prompt": prompt,
+    "stream": False,
+    "think": False
+}
+```
+
+This tells Ollama:
+
+```text
+Which model?
+→ qwen3.5:4b
+
+What should the model process?
+→ prompt
+
+Should the response stream in chunks?
+→ False
+
+Should thinking mode be used/exposed?
+→ False
+```
+
+The payload begins as a Python dictionary.
+
+Using:
+
+```python
+json=payload
+```
+
+allows `requests` to send it as JSON.
+
+Flow:
+
+```text
+Python dictionary
+        ↓
+JSON
+        ↓
+HTTP request
+        ↓
+Ollama API
+```
+
+---
+
+### What Does `stream` Mean?
+
+```python
+"stream": False
+```
+
+controls how the generated response is returned.
+
+Conceptually:
+
+```text
+stream = True
+→ response can arrive piece by piece
+
+stream = False
+→ wait for the complete response
+```
+
+For this project, I wanted a complete sales report at once.
+
+---
+
+### What Does `think` Mean?
+
+```python
+"think": False
+```
+
+is related to the model's thinking/reasoning mode.
+
+For this application I want the final report rather than extra thinking output.
+
+So:
+
+```text
+think = False
+→ return the final generated answer for the application
+```
+
+---
+
+### What Happens After I Send the API Request?
+
+This was one of the most important connections I learned.
+
+When my Python code executes:
+
+```python
+response = requests.post(
+    url,
+    json=payload,
+    timeout=30
+)
+```
+
+the conceptual flow is:
+
+```text
+Python application
+        ↓
+requests library
+        ↓
+HTTP POST request
+        ↓
+Ollama API
+        ↓
+Ollama reads the payload
+        ↓
+Ollama sees:
+model = qwen3.5:4b
+        ↓
+Ollama sends the prompt to Qwen
+        ↓
+Qwen generates text
+        ↓
+Ollama creates an API response
+        ↓
+HTTP response
+        ↓
+Python receives it
+```
+
+So the model is not directly communicating with my Python code.
+
+Ollama sits between my application and the Qwen model.
+
+---
+
+### What Is the Response?
+
+The variable:
+
+```python
+response
+```
+
+contains the HTTP response object.
+
+It can contain information such as:
+
+```text
+Status code
+Headers
+Response body
+JSON data
+```
+
+To get the JSON body as Python data:
+
+```python
+response_data = response.json()
+```
+
+Then I can access the generated text:
+
+```python
+response_data["response"]
+```
+
+Flow:
+
+```text
+HTTP Response Object
+        ↓
+response.json()
+        ↓
+Python dictionary
+        ↓
+["response"]
+        ↓
+Generated LLM text
+```
+
+---
+
+### What Is `app.py` Doing?
+
+`app.py` connects all the modules.
+
+It acts as the main orchestrator.
+
+Example flow:
+
+```python
+data = analyze_sales("sales.csv")
+```
+
+means:
+
+```text
+sales_analyzer.py
+→ calculate the sales facts
+```
+
+Then:
+
+```python
+prompt = build_prompt(data)
+```
+
+means:
+
+```text
+prompt_builder.py
+→ turn the calculated facts into a prompt
+```
+
+Then:
+
+```python
+report = send_api_request(prompt)
+```
+
+means:
+
+```text
+llm_client.py
+→ send the prompt to the LLM service
+→ receive the generated answer
+→ return it
+```
+
+Finally:
+
+```python
+print(report)
+```
+
+displays the report.
+
+---
+
+### Separation of Responsibilities
+
+The project is divided into modules because each module has a different responsibility.
+
+```text
+sales_analyzer.py
+→ Data calculation
+
+prompt_builder.py
+→ Prompt creation
+
+llm_client.py
+→ API communication
+
+app.py
+→ Connect everything together
+```
+
+This is easier to understand and maintain than placing all logic in one large file.
+
+---
+
+### Deterministic Python vs Generative AI
+
+One important design decision was:
+
+```text
+Python calculates the facts.
+
+LLM writes the natural-language report.
+```
+
+For example:
+
+```text
+Python calculates:
+Total sales = 16700
+
+LLM receives:
+Total sales: 16700
+
+LLM writes:
+Total sales: 16700
+```
+
+I do not need the LLM to calculate values that Python can calculate reliably.
+
+This reduces unnecessary hallucination and makes the application more predictable.
+
+---
+
+### Exception Handling
+
+I learned how to prevent programs from crashing when errors occur.
+
+Basic structure:
+
+```python
+try:
+    # risky code
+
+except SomeError:
+    # handle the error
+```
+
+---
+
+### `ValueError`
+
+Example:
+
+```python
+number = int("hello")
+```
+
+causes:
+
+```text
+ValueError
+```
+
+because `"hello"` cannot be converted into an integer.
+
+---
+
+### Multiple Exception Types
+
+Different errors can be handled differently.
+
+Example:
+
+```python
+try:
+    number = int(input("Enter a number: "))
+    result = 100 / number
+
+except ValueError:
+    print("Please enter a valid number.")
+
+except ZeroDivisionError:
+    print("Number cannot be zero.")
+```
+
+---
+
+### `else`
+
+`else` runs only if no exception occurs.
+
+```python
+try:
+    ...
+except:
+    ...
+else:
+    ...
+```
+
+Concept:
+
+```text
+Success
+→ else runs
+
+Error
+→ matching except runs
+→ else does not run
+```
+
+---
+
+### `finally`
+
+`finally` runs whether an error occurs or not.
+
+Concept:
+
+```text
+Success
+→ finally runs
+
+Error
+→ finally still runs
+```
+
+---
+
+### API Connection Error
+
+For API communication I learned:
+
+```python
+requests.exceptions.ConnectionError
+```
+
+This can happen when the client cannot connect to the server.
+
+Concept:
+
+```text
+Python
+→ tries to reach API
+→ API/server unavailable
+→ ConnectionError
+```
+
+---
+
+### Connection Error vs HTTP Error
+
+These are different.
+
+```text
+ConnectionError
+→ server could not be reached
+```
+
+But:
+
+```text
+404
+→ server was reached
+→ requested endpoint was not found
+```
+
+This distinction is important.
+
+---
+
+### HTTP Status Codes
+
+Some common HTTP status codes:
+
+```text
+200 → Success
+400 → Bad Request
+404 → Not Found
+500 → Server Error
+```
+
+A status code means the server sent a response.
+
+---
+
+### `raise_for_status()`
+
+I learned:
+
+```python
+response.raise_for_status()
+```
+
+This checks whether the HTTP status represents an error.
+
+Concept:
+
+```text
+2xx
+→ continue
+
+4xx / 5xx
+→ raise HTTPError
+```
+
+---
+
+### Timeout
+
+I used:
+
+```python
+timeout=30
+```
+
+A timeout prevents the application from waiting forever for the server.
+
+Possible exception:
+
+```python
+requests.exceptions.Timeout
+```
+
+---
+
+### Requests Exception Hierarchy
+
+The `requests` library contains its own exception classes.
+
+Examples:
+
+```text
+RequestException
+├── ConnectionError
+├── Timeout
+└── HTTPError
+```
+
+These are related to the `requests` library.
+
+They are different from Python built-in exceptions such as:
+
+```text
+ValueError
+ZeroDivisionError
+FileNotFoundError
+```
+
+---
+
+### Why Specific Exceptions Come First
+
+Example:
+
+```python
+except requests.exceptions.ConnectionError:
+    ...
+
+except requests.exceptions.Timeout:
+    ...
+
+except requests.exceptions.HTTPError:
+    ...
+
+except requests.exceptions.RequestException:
+    ...
+```
+
+Rule:
+
+```text
+Specific exceptions first
+        ↓
+General exception last
+```
+
+This allows different problems to have different responses.
+
+---
+
+### `print()` vs `return`
+
+I reviewed an important function concept.
+
+```python
+print(value)
+```
+
+means:
+
+```text
+Display this value.
+```
+
+But:
+
+```python
+return value
+```
+
+means:
+
+```text
+Send this value back to the caller.
+```
+
+If a Python function does not explicitly return a value:
+
+```text
+Python automatically returns None
+```
+
+This explained why I previously saw:
+
+```text
+None
+```
+
+after the generated report.
+
+---
+
+### Why Did We Use a Local LLM Instead of a Cloud API?
+
+We could have used a cloud LLM API.
+
+A cloud API was technically possible.
+
+However, we intentionally used a local Ollama setup first so I could learn the main API concepts without adding many cloud-specific concepts at the same time.
+
+With local Ollama:
+
+```text
+Python
+    ↓
+HTTP
+    ↓
+localhost
+    ↓
+Ollama API
+    ↓
+Qwen
+```
+
+This allowed me to focus on:
+
+```text
+Client
+Server
+Endpoint
+POST
+Payload
+JSON
+Response
+Status code
+Timeout
+Exception handling
+```
+
+without immediately needing:
+
+```text
+API keys
+Authentication
+Cloud billing
+Rate limits
+Provider accounts
+Secret management
+Cloud security
+```
+
+---
+
+### Could I Use a Cloud LLM API?
+
+Yes.
+
+The architecture would still be similar.
+
+Current local version:
+
+```text
+Python Application
+        ↓
+requests
+        ↓
+Ollama API on localhost
+        ↓
+Qwen on my computer
+```
+
+Cloud version:
+
+```text
+Python Application
+        ↓
+requests / provider SDK
+        ↓
+Internet
+        ↓
+Cloud API
+        ↓
+Cloud-hosted model
+```
+
+The fundamental API ideas stay the same.
+
+---
+
+### Would Only the URL Change?
+
+No.
+
+The URL would change, but other things could also change.
+
+Current local endpoint:
+
+```text
+http://localhost:11434/api/generate
+```
+
+Cloud might use something conceptually like:
+
+```text
+https://api.provider.com/...
+```
+
+But cloud integration may also require:
+
+```text
+Authentication
+API key
+Authorization headers
+Provider-specific model name
+Different payload structure
+Different response structure
+Rate-limit handling
+Retries
+Cost monitoring
+Security
+```
+
+So moving from local to cloud is not simply changing one URL.
+
+---
+
+### What Would I Need to Learn for a Cloud LLM API?
+
+The next important concepts would be:
+
+```text
+API keys
+Authentication
+HTTP headers
+Environment variables
+401 authentication errors
+429 rate-limit errors
+Retries
+Provider-specific API documentation
+Token/usage cost
+Secret management
+Security and privacy
+```
+
+These would build on top of the API concepts I already learned.
+
+---
+
+### Why Is This Local Project Useful for Cloud API Work?
+
+Because the core concepts transfer.
+
+I already understand:
+
+```text
+Client
+Server
+Endpoint
+HTTP
+POST
+JSON
+Payload
+Response
+Status code
+Timeout
+Exception handling
+```
+
+For cloud usage I would add:
+
+```text
+Authentication
+Security
+Provider-specific schema
+Rate limits
+Retries
+Cost
+```
+
+So I would not be starting from zero.
+
+---
+
+## 2. What Did I Do Today?
+
+Today I first practiced exception handling separately before applying it to the portfolio project.
+
+I practiced:
+
+```text
+try
+except
+else
+finally
+ValueError
+ZeroDivisionError
+```
+
+I then practiced API-specific errors:
+
+```text
+ConnectionError
+Timeout
+HTTPError
+RequestException
+```
+
+I deliberately called a wrong Ollama endpoint and received:
+
+```text
+404
+```
+
+This helped me understand the difference between:
+
+```text
+Connection failure
+```
+
+and:
+
+```text
+Server response with an HTTP error
+```
+
+I practiced:
+
+```python
+response.raise_for_status()
+```
+
+and saw how a `404` response could become an `HTTPError`.
+
+I also practiced a successful Ollama request and received:
+
+```text
+200
+```
+
+Then I created a POST request with a payload:
+
+```python
+payload = {
+    "model": "qwen3.5:4b",
+    "prompt": "Say hello in one sentence.",
+    "stream": False,
+    "think": False
+}
+```
+
+I sent it using:
+
+```python
+requests.post()
+```
+
+and successfully received:
+
+```text
+Hello! It's great to meet you.
+```
+
+After learning these concepts separately, I applied them to the AI Sales Report Assistant.
+
+I added:
+
+```text
+Timeout handling
+HTTP status checking
+Connection error handling
+HTTP error handling
+General request error handling
+```
+
+I also corrected the difference between:
+
+```text
+print()
+```
+
+and:
+
+```text
+return
+```
+
+so that `llm_client.py` returns the generated report to `app.py` instead of causing `None` to appear.
+
+I also improved my understanding of the full project architecture:
+
+```text
+CSV
+→ Python calculations
+→ Prompt
+→ API client
+→ Ollama API
+→ Qwen
+→ Response
+→ Final report
+```
+
+Finally, I prepared the project for GitHub and created a `.gitignore` file containing:
+
+```text
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+.env
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+### What is the actual LLM in your project?
+
+The actual LLM is Qwen.
+
+I used:
+
+```text
+qwen3.5:4b
+```
+
+Qwen receives the prompt and generates the natural-language report.
+
+---
+
+### What is Ollama?
+
+Ollama is software used to run and manage LLMs locally.
+
+In my project, Ollama runs the Qwen model and exposes a local API that my Python application can call.
+
+---
+
+### Is Ollama the model?
+
+No.
+
+The distinction is:
+
+```text
+Ollama
+→ software/runtime used to run and expose the model
+
+Qwen
+→ actual Large Language Model
+```
+
+---
+
+### Why did you install Ollama?
+
+I needed a way to run the model locally and expose it through an API that my Python application could communicate with.
+
+Ollama provides that layer.
+
+---
+
+### Why did you download Qwen separately?
+
+Ollama is the runtime, but Qwen is the actual model.
+
+The model contains the trained parameters needed for language generation, so the model must also be available locally.
+
+---
+
+### What is the API in your project?
+
+The project uses the local Ollama API.
+
+The generation endpoint is:
+
+```text
+http://localhost:11434/api/generate
+```
+
+---
+
+### Is `llm_client.py` the API?
+
+No.
+
+`llm_client.py` is my API client code.
+
+It sends requests to the Ollama API and processes the responses.
+
+---
+
+### What is the `requests` library used for?
+
+The `requests` library allows my Python code to send HTTP requests.
+
+In this project I use it to send an HTTP POST request to the Ollama API.
+
+---
+
+### What happens when your Python application sends a prompt?
+
+The flow is:
+
+```text
+Python
+→ requests
+→ HTTP POST request
+→ Ollama API
+→ Ollama sends prompt to Qwen
+→ Qwen generates text
+→ Ollama returns JSON response
+→ Python reads the response
+```
+
+---
+
+### What is a payload?
+
+A payload is the data sent with the API request.
+
+In my project it contains:
+
+```text
+model
+prompt
+stream
+think
+```
+
+---
+
+### What is JSON used for?
+
+JSON is used to exchange structured data between my Python application and the API.
+
+My Python dictionary is sent as JSON, and the API returns JSON data.
+
+---
+
+### What does `response.json()` do?
+
+It converts the JSON response body into Python data.
+
+Then I can access the generated text using:
+
+```python
+response_data["response"]
+```
+
+---
+
+### What is the difference between a ConnectionError and a 404?
+
+A `ConnectionError` means the client could not reach the server.
+
+A `404` means the server was reached successfully, but the requested endpoint or resource was not found.
+
+---
+
+### What does `raise_for_status()` do?
+
+It checks the HTTP response status.
+
+If the response contains a 4xx or 5xx error, it raises an `HTTPError`.
+
+---
+
+### Why did you add a timeout?
+
+A timeout prevents the application from waiting forever for a server response.
+
+Example:
+
+```python
+timeout=30
+```
+
+---
+
+### Why do you handle `RequestException` last?
+
+Because it is a more general request-related exception.
+
+More specific exceptions should be checked first:
+
+```text
+ConnectionError
+Timeout
+HTTPError
+RequestException
+```
+
+---
+
+### Why does Python calculate the sales metrics instead of the LLM?
+
+Python calculations are deterministic and reliable.
+
+The LLM is used for natural-language generation.
+
+My architecture is:
+
+```text
+Python
+→ calculates facts
+
+LLM
+→ writes the report
+```
+
+---
+
+### Why did you use a local LLM instead of a cloud API?
+
+I wanted to first learn the core API workflow:
+
+```text
+HTTP
+POST
+JSON
+Payload
+Response
+Status codes
+Timeout
+Error handling
+```
+
+without immediately adding:
+
+```text
+API keys
+Authentication
+Rate limits
+Cloud billing
+Secret management
+```
+
+The same core API concepts can later be transferred to a cloud LLM API.
+
+---
+
+### Could this project use a cloud LLM?
+
+Yes.
+
+The main application architecture could remain similar.
+
+Instead of:
+
+```text
+Python
+→ Ollama local API
+→ local Qwen
+```
+
+it could become:
+
+```text
+Python
+→ cloud API
+→ cloud-hosted LLM
+```
+
+The main changes would happen mostly in the LLM client layer.
+
+---
+
+### What would you need to change for a cloud LLM API?
+
+I would first read the provider's API documentation.
+
+Then I would identify:
+
+```text
+Cloud API endpoint
+Authentication method
+API key requirements
+Headers
+Model ID
+Request schema
+Response schema
+Rate limits
+Errors
+Pricing
+```
+
+I would then update my client code accordingly.
+
+---
+
+### Would you hardcode an API key in your Python file?
+
+No.
+
+I would store sensitive credentials outside the source code, for example using environment variables.
+
+I would also make sure secret files such as:
+
+```text
+.env
+```
+
+are excluded from Git using:
+
+```text
+.gitignore
+```
+
+---
+
+### Explain your project in one answer.
+
+My application reads sales data from a CSV file and calculates the required business metrics using Python. It then builds a structured prompt and passes it to an API client module. The client uses the Python `requests` library to send an HTTP POST request to Ollama's local API. Ollama runs the Qwen language model, sends the prompt to the model, and returns the generated text as a JSON response. My Python application extracts that generated response and displays the final management sales report.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+### Mistake: Thinking Ollama and Qwen were the same thing
+
+Correction:
+
+```text
+Ollama
+→ software/runtime
+
+Qwen
+→ actual LLM
+```
+
+Ollama runs and manages the model.
+
+Qwen performs the language generation.
+
+---
+
+### Mistake: Thinking `llm_client.py` was the API
+
+Correction:
+
+```text
+llm_client.py
+→ API client code
+
+Ollama API
+→ interface being called
+
+/api/generate
+→ API endpoint
+```
+
+---
+
+### Mistake: Learning API code without connecting the architecture
+
+Correction:
+
+I should understand the full relationship:
+
+```text
+Python
+→ requests
+→ HTTP
+→ API endpoint
+→ Ollama
+→ Qwen
+→ response
+→ Python
+```
+
+The syntax is only one part of the system.
+
+---
+
+### Mistake: Exception spelling
+
+Incorrect:
+
+```python
+ValueErrror
+```
+
+Correct:
+
+```python
+ValueError
+```
+
+---
+
+### Mistake: Incorrect dictionary syntax
+
+Incorrect:
+
+```python
+"model": "qwen3.5:4b"
+"prompt": "Hello"
+```
+
+Correct:
+
+```python
+"model": "qwen3.5:4b",
+"prompt": "Hello",
+```
+
+Dictionary items need commas between them.
+
+---
+
+### Mistake: Incorrect `stream` key
+
+Incorrect:
+
+```python
+"stream:": False
+```
+
+Correct:
+
+```python
+"stream": False
+```
+
+The colon belongs between the key and value.
+
+---
+
+### Mistake: Confusing ConnectionError with HTTP errors
+
+Correction:
+
+```text
+ConnectionError
+→ server could not be reached
+
+404 / 500
+→ server was reached and returned an error response
+```
+
+---
+
+### Mistake: Printing instead of returning
+
+If a function only does:
+
+```python
+print(response_data["response"])
+```
+
+but the caller expects a returned value, the function eventually returns:
+
+```text
+None
+```
+
+Correct:
+
+```python
+return response_data["response"]
+```
+
+---
+
+### Mistake: Thinking cloud migration only means changing the URL
+
+Correction:
+
+A cloud migration may require:
+
+```text
+Remote URL
+Authentication
+API key
+Headers
+Different payload
+Different response parsing
+Rate-limit handling
+Retries
+Security
+Cost monitoring
+```
+
+The core API concepts remain similar, but cloud integration adds additional responsibilities.
+
+---
+
+### Main Learning Principle
+
+For future technologies, I should not learn only the syntax.
+
+I should ask:
+
+```text
+1. What is it?
+
+2. Why do I need it?
+
+3. Where does it sit in the system?
+
+4. What goes into it?
+
+5. What comes out of it?
+
+6. How does it connect to what I already know?
+```
+
+Then the learning process should be:
+
+```text
+Understand the concept
+        ↓
+Understand the architecture
+        ↓
+Learn the syntax
+        ↓
+Practice separately
+        ↓
+Debug mistakes
+        ↓
+Rebuild from memory
+        ↓
+Apply it to a portfolio project
+```
+
+This helps me understand the complete system instead of only memorizing code.
