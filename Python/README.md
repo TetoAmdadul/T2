@@ -3978,3 +3978,1013 @@ Apply it to a portfolio project
 ```
 
 This helps me understand the complete system instead of only memorizing code.
+
+
+# Daily Learning — Python Day 8 + SQL Day 1 & 2
+
+## 1. What Did I Learn Today?
+
+### Python Day 8 — Data Cleaning
+
+Today I completed Python Day 8: Data Cleaning.
+
+Data Cleaning is the process of finding and fixing problems in data before analysis.
+
+I learned these main data-quality problems:
+
+- Missing values
+- Invalid values
+- Inconsistent formatting
+- Duplicate records
+- Incorrect data types
+- Dirty data
+- Data quality
+
+### Missing Values
+
+A missing value means an expected value is absent.
+
+Example:
+
+```python
+{"name": "Rafi", "city": "", "sales": 1400}
+```
+
+Here, the `city` value is missing.
+
+### Invalid Values
+
+An invalid value is present, but it breaks an expected rule or business rule.
+
+Example:
+
+```python
+{"name": "Sara", "sales": -500}
+```
+
+`-500` is an integer, so the data type is correct, but the value may be invalid according to the business rule.
+
+Important distinction:
+
+```text
+Incorrect data type
+≠
+Invalid value
+
+"3200"
+→ string
+→ incorrect type for numerical calculation
+
+-500
+→ integer
+→ correct type
+→ but possibly invalid business value
+```
+
+### Inconsistent Formatting
+
+Inconsistent formatting means the same kind of data is stored in different formats.
+
+Example:
+
+```text
+Helsinki
+helsinki
+HELSINKI
+ Helsinki 
+```
+
+I practiced removing extra whitespace with:
+
+```python
+record["city"] = record["city"].strip()
+```
+
+Important connection:
+
+```text
+record["city"].strip()
+→ creates a cleaned version
+
+record["city"] = record["city"].strip()
+→ creates the cleaned version and saves it back
+```
+
+### Incorrect Data Types
+
+CSV values are normally read as strings.
+
+Example:
+
+```text
+"3200"
+→ str
+```
+
+For numerical calculations, I may need:
+
+```python
+record["sales"] = int(record["sales"])
+```
+
+Result:
+
+```text
+"3200"
+→ 3200
+→ str becomes int
+```
+
+### Duplicate Records
+
+Two identical-looking rows should not automatically be deleted.
+
+They may represent:
+
+- an accidental duplicate
+- two separate valid transactions
+
+More information may be needed, such as:
+
+- transaction ID
+- order number
+- timestamp
+- confirmation from the business source
+
+So identical-looking records should initially be treated as possible duplicates until there is enough evidence.
+
+### Cleaning vs Detection
+
+I learned the difference between cleaning data and detecting a problem.
+
+```text
+Cleaning
+→ actually changes/fixes the data
+
+Detection
+→ identifies that a problem exists
+```
+
+Example of cleaning:
+
+```python
+record["city"] = record["city"].strip()
+```
+
+Example of detection:
+
+```python
+if record["sales"] < 0:
+    print("Invalid sales value")
+```
+
+The second example detects the problem but does not automatically decide how to correct it.
+
+### Data Cleaning Workflow
+
+```text
+Raw data
+↓
+Identify problems
+↓
+Clean / validate data
+↓
+Reliable data
+↓
+Analysis
+↓
+Report / Dashboard
+↓
+Business decision
+```
+
+Important principle:
+
+> Correct calculations performed on bad data can still produce incorrect or misleading business results.
+
+---
+
+### SQL Foundations
+
+After completing Python Day 8, I started SQL.
+
+SQL stands for **Structured Query Language**.
+
+SQL is used to communicate with relational databases and work with structured data.
+
+### Database
+
+A database is an organized collection of data that can be stored, managed, and retrieved.
+
+### Table
+
+A table stores related data in rows and columns.
+
+### Row
+
+A row usually represents one complete record.
+
+### Column
+
+A column represents one type or field of information.
+
+Connection to Python and CSV:
+
+```text
+Python dictionary
+→ one record
+
+List of dictionaries
+→ multiple records
+
+CSV row
+→ one record
+
+SQL row
+→ one record
+
+SQL table
+→ multiple records
+```
+
+### Query
+
+A query is an instruction or request sent to a database to retrieve or work with data.
+
+---
+
+### SELECT
+
+`SELECT` decides which columns or calculated results should appear.
+
+```sql
+SELECT name, sales
+FROM sales;
+```
+
+`*` means all columns:
+
+```sql
+SELECT *
+FROM sales;
+```
+
+### FROM
+
+`FROM` specifies which table SQL should use.
+
+```text
+SELECT
+→ which columns?
+
+FROM
+→ which table?
+```
+
+### WHERE
+
+`WHERE` filters individual rows using conditions.
+
+```sql
+SELECT name, sales
+FROM sales
+WHERE sales > 3000;
+```
+
+Connection to Python:
+
+```text
+Python if
+→ checks a condition
+
+SQL WHERE
+→ filters rows using a condition
+```
+
+### Comparison Operators
+
+```text
+=   equal to
+>   greater than
+<   less than
+>=  greater than or equal to
+<=  less than or equal to
+<>  not equal to
+```
+
+Important difference:
+
+```text
+Python equality → ==
+SQL equality    → =
+```
+
+### AND
+
+`AND` means all connected conditions must be true.
+
+```sql
+WHERE sales > 3000
+AND city = 'Helsinki'
+```
+
+### OR
+
+`OR` means at least one condition must be true.
+
+```sql
+WHERE city = 'Espoo'
+OR city = 'Turku'
+```
+
+### IN
+
+`IN` is a cleaner way to check several possible values for the same column.
+
+```sql
+WHERE city IN ('Helsinki', 'Espoo', 'Turku')
+```
+
+This is similar to:
+
+```sql
+WHERE city = 'Helsinki'
+OR city = 'Espoo'
+OR city = 'Turku'
+```
+
+### BETWEEN
+
+`BETWEEN` checks whether a value is inside a range.
+
+```sql
+WHERE sales BETWEEN 2000 AND 4000
+```
+
+`BETWEEN` is inclusive.
+
+```text
+sales >= 2000
+AND
+sales <= 4000
+```
+
+The lower and upper boundary values are included.
+
+---
+
+### ORDER BY
+
+`ORDER BY` sorts query results.
+
+```text
+ASC
+→ lowest to highest
+→ A to Z
+
+DESC
+→ highest to lowest
+→ Z to A
+```
+
+Example:
+
+```sql
+SELECT name, sales
+FROM sales
+ORDER BY sales DESC;
+```
+
+### LIMIT
+
+`LIMIT` restricts how many rows are returned.
+
+```sql
+SELECT name, sales
+FROM sales
+ORDER BY sales DESC
+LIMIT 3;
+```
+
+Important connection:
+
+```text
+ORDER BY
+→ decides which rows come first
+
+LIMIT
+→ decides how many rows are returned
+```
+
+This can be used for Top-N analysis.
+
+---
+
+### Aggregate Functions
+
+Aggregate functions summarize multiple values.
+
+```text
+SUM()
+→ total
+
+MIN()
+→ lowest value
+
+MAX()
+→ highest value
+
+AVG()
+→ average
+
+COUNT()
+→ count
+```
+
+Connection to Python:
+
+```text
+Python        SQL
+
+sum()         SUM()
+min()         MIN()
+max()         MAX()
+len()         COUNT()
+average       AVG()
+```
+
+### SUM()
+
+```sql
+SELECT SUM(sales)
+FROM sales;
+```
+
+Returns the total sales.
+
+### MIN()
+
+```sql
+SELECT MIN(sales)
+FROM sales;
+```
+
+Returns the lowest sales value.
+
+### MAX()
+
+```sql
+SELECT MAX(sales)
+FROM sales;
+```
+
+Returns the highest sales value.
+
+### AVG()
+
+```sql
+SELECT AVG(sales)
+FROM sales;
+```
+
+Conceptually:
+
+```text
+AVG(sales)
+≈
+SUM(sales) / COUNT(sales)
+```
+
+`AVG(column)` ignores `NULL` values in that column.
+
+### COUNT(*)
+
+```sql
+SELECT COUNT(*)
+FROM sales;
+```
+
+Counts all rows.
+
+### COUNT(column_name)
+
+```sql
+SELECT COUNT(sales)
+FROM sales;
+```
+
+Counts non-NULL values in the `sales` column.
+
+Important distinction:
+
+```text
+COUNT(*)
+→ counts rows
+
+COUNT(column)
+→ counts non-NULL values in that column
+```
+
+---
+
+### GROUP BY
+
+`GROUP BY` puts rows with the same value into groups so that aggregate functions can summarize each group.
+
+Example:
+
+```sql
+SELECT city, SUM(sales)
+FROM sales
+GROUP BY city;
+```
+
+Conceptually:
+
+```text
+GROUP BY city
+→ create one group per city
+
+SUM(sales)
+→ total sales inside each city group
+```
+
+Important difference:
+
+```text
+GROUP BY
+→ creates groups for aggregation
+
+ORDER BY
+→ sorts the result
+```
+
+### HAVING
+
+`HAVING` filters grouped or aggregate results.
+
+```sql
+SELECT city, SUM(sales)
+FROM sales
+GROUP BY city
+HAVING SUM(sales) > 7000;
+```
+
+Important distinction:
+
+```text
+WHERE
+→ filters individual rows
+→ before grouping / aggregation
+
+HAVING
+→ filters grouped / aggregate results
+→ after aggregation
+```
+
+`HAVING` can also be used without `GROUP BY` when the entire result is treated as one aggregate group.
+
+Example:
+
+```sql
+SELECT AVG(sales)
+FROM sales
+HAVING AVG(sales) > 3000;
+```
+
+---
+
+### AS — Alias
+
+`AS` gives a temporary readable name to a column or calculated result.
+
+```sql
+SELECT city, SUM(sales) AS total_sales
+FROM sales
+GROUP BY city;
+```
+
+`AS` does not permanently rename the database column.
+
+---
+
+### DISTINCT
+
+`DISTINCT` returns unique values.
+
+```sql
+SELECT DISTINCT city
+FROM sales;
+```
+
+Important distinction:
+
+```text
+DISTINCT
+→ use when I only want unique values
+
+GROUP BY
+→ use when I want summaries for each category
+```
+
+Example:
+
+```sql
+SELECT DISTINCT product
+FROM sales
+WHERE city IN ('Helsinki', 'Turku');
+```
+
+---
+
+## 2. What Did I Do Today?
+
+I completed Python Day 8 Data Cleaning before starting SQL.
+
+For Python Data Cleaning, I practiced:
+
+- detecting missing values
+- detecting invalid values
+- identifying inconsistent formatting
+- removing extra whitespace using `strip()`
+- converting CSV strings to integers using `int()`
+- saving cleaned values back into dictionaries
+- identifying possible duplicate records
+- distinguishing between detection and actual cleaning
+- connecting CSV data cleaning to future pandas, SQL, and BI work
+
+Example:
+
+```python
+for record in sales_data:
+    record["city"] = record["city"].strip()
+    record["sales"] = int(record["sales"])
+
+    if record["city"] == "":
+        print(f"Missing city for {record['name']}")
+
+    if record["sales"] < 0:
+        print(f"Invalid sales value for {record['name']}")
+```
+
+I then started SQL and practiced:
+
+- `SELECT`
+- `FROM`
+- `WHERE`
+- comparison operators
+- `AND`
+- `OR`
+- `IN`
+- `BETWEEN`
+- `ORDER BY`
+- `ASC`
+- `DESC`
+- `SUM()`
+- `MIN()`
+- `MAX()`
+- `AVG()`
+- `COUNT(*)`
+- `COUNT(column)`
+- `GROUP BY`
+- `HAVING`
+- `AS`
+- `DISTINCT`
+- `LIMIT`
+
+I also practiced more difficult SQL business questions.
+
+Example:
+
+```sql
+SELECT city, SUM(sales) AS total_sales
+FROM sales
+WHERE city IN ('Helsinki', 'Espoo', 'Turku')
+GROUP BY city
+HAVING SUM(sales) > 6000
+ORDER BY SUM(sales) DESC;
+```
+
+I also practiced finding Top-N groups:
+
+```sql
+SELECT city, SUM(sales)
+FROM sales
+GROUP BY city
+ORDER BY SUM(sales) DESC
+LIMIT 2;
+```
+
+And lowest/highest sales for each city:
+
+```sql
+SELECT city,
+       MIN(sales) AS lowest_sale,
+       MAX(sales) AS highest_sale
+FROM sales
+GROUP BY city;
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+### What is Data Cleaning?
+
+Data Cleaning is the process of identifying and correcting data-quality problems before analysis.
+
+### What is a missing value?
+
+A missing value is an expected value that is absent.
+
+### What is an invalid value?
+
+An invalid value exists but does not follow the expected business rule or allowed range.
+
+### What is inconsistent formatting?
+
+Inconsistent formatting means the same kind of data is stored using different formats.
+
+### What is the difference between detection and cleaning?
+
+Detection identifies that a problem exists.
+
+Cleaning actually changes or fixes the data.
+
+### Why should duplicate-looking rows not automatically be deleted?
+
+Because identical-looking rows may represent separate valid transactions. More information such as transaction ID, order ID, or timestamp may be needed.
+
+### What is SQL?
+
+SQL stands for Structured Query Language. It is used to communicate with relational databases and work with structured data.
+
+### What is a database?
+
+A database is an organized collection of data that can be stored, managed, and retrieved.
+
+### What is a table?
+
+A table stores related records in rows and columns.
+
+### What is the difference between a row and a column?
+
+A row represents one record.
+
+A column represents one type or field of information.
+
+### What does SELECT do?
+
+`SELECT` specifies which columns or calculated results should appear.
+
+### What does FROM do?
+
+`FROM` specifies which table the query uses.
+
+### What does WHERE do?
+
+`WHERE` filters individual rows based on a condition.
+
+### What is the difference between AND and OR?
+
+`AND` requires all connected conditions to be true.
+
+`OR` requires at least one condition to be true.
+
+### What does IN do?
+
+`IN` checks whether a value matches one of several possible values.
+
+### What does BETWEEN do?
+
+`BETWEEN` checks whether a value falls inside a range.
+
+It is inclusive, so both boundary values are included.
+
+### What does ORDER BY do?
+
+`ORDER BY` sorts query results.
+
+### What is the difference between ASC and DESC?
+
+`ASC` sorts lowest to highest or A to Z.
+
+`DESC` sorts highest to lowest or Z to A.
+
+### What is an aggregate function?
+
+An aggregate function summarizes multiple values into one result.
+
+Examples:
+
+- `SUM()`
+- `AVG()`
+- `MIN()`
+- `MAX()`
+- `COUNT()`
+
+### What is the difference between COUNT(*) and COUNT(column)?
+
+`COUNT(*)` counts all rows.
+
+`COUNT(column)` counts only non-NULL values in that column.
+
+### What does GROUP BY do?
+
+`GROUP BY` creates groups of rows with matching values so aggregate functions can calculate summaries for each group.
+
+### What is the difference between GROUP BY and ORDER BY?
+
+`GROUP BY` creates groups for aggregation.
+
+`ORDER BY` sorts query results.
+
+### What is the difference between WHERE and HAVING?
+
+`WHERE` filters individual rows before aggregation.
+
+`HAVING` filters grouped or aggregate results after aggregation.
+
+### What does DISTINCT do?
+
+`DISTINCT` returns unique values or unique combinations of selected columns.
+
+### What does AS do?
+
+`AS` creates a temporary readable alias for a column or calculated result.
+
+### What does LIMIT do?
+
+`LIMIT` restricts the number of rows returned by a query.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+### Python Data Cleaning — print vs reassignment
+
+This:
+
+```python
+print(record["city"].strip())
+```
+
+only displays the cleaned value.
+
+This:
+
+```python
+record["city"] = record["city"].strip()
+```
+
+actually saves the cleaned value back into the dictionary.
+
+### Invalid value vs incorrect data type
+
+```text
+-500
+→ int
+→ type is correct
+→ value may be invalid
+
+"3200"
+→ str
+→ wrong type for numerical calculation
+```
+
+### Duplicate records
+
+Two identical-looking rows are not automatically duplicates.
+
+I need more business context before deleting data.
+
+---
+
+### SQL — Using WHERE twice
+
+Incorrect:
+
+```sql
+WHERE sales BETWEEN 2000 AND 4500
+WHERE city IN ('Helsinki', 'Espoo')
+```
+
+Correct:
+
+```sql
+WHERE sales BETWEEN 2000 AND 4500
+AND city IN ('Helsinki', 'Espoo')
+```
+
+### SQL — Text values need quotes
+
+Incorrect:
+
+```sql
+city IN (Helsinki, Espoo)
+```
+
+Correct:
+
+```sql
+city IN ('Helsinki', 'Espoo')
+```
+
+### SQL — ASC vs DESC
+
+```text
+ASC
+→ lowest to highest
+
+DESC
+→ highest to lowest
+```
+
+### SQL — GROUP BY with raw columns
+
+Incorrect idea:
+
+```sql
+SELECT city, sales
+FROM sales
+GROUP BY city;
+```
+
+A city group may contain multiple sales values.
+
+For summarized data:
+
+```sql
+SELECT city, AVG(sales)
+FROM sales
+GROUP BY city;
+```
+
+### SQL — WHERE vs HAVING
+
+```text
+WHERE
+→ individual rows
+
+HAVING
+→ aggregate/group results
+```
+
+### SQL — DISTINCT with multiple columns
+
+```sql
+SELECT DISTINCT product, city, sales
+```
+
+returns unique combinations of all three selected columns.
+
+If I only want unique product names:
+
+```sql
+SELECT DISTINCT product
+FROM sales;
+```
+
+### SQL — Top-N needs sorting first
+
+`LIMIT 2` alone does not mean top 2.
+
+Correct pattern:
+
+```sql
+SELECT city, SUM(sales)
+FROM sales
+GROUP BY city
+ORDER BY SUM(sales) DESC
+LIMIT 2;
+```
+
+### Final SQL Mental Model
+
+```text
+FROM
+→ which table?
+
+WHERE
+→ which individual rows?
+
+GROUP BY
+→ which groups?
+
+Aggregate function
+→ what summary calculation?
+
+HAVING
+→ which aggregated groups?
+
+SELECT
+→ what should appear in the result?
+
+ORDER BY
+→ how should the result be sorted?
+
+LIMIT
+→ how many rows should be returned?
+```
+
+Today I connected Python Data Cleaning with SQL and started moving from file-based data processing toward relational data analysis.
