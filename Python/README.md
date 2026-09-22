@@ -4988,3 +4988,1369 @@ LIMIT
 ```
 
 Today I connected Python Data Cleaning with SQL and started moving from file-based data processing toward relational data analysis.
+# SQL Learning — Schema, Keys, Relationships & Data Insertion
+
+## 1. What Did I Learn Today?
+
+Today I continued SQL learning with a short recall of previously learned concepts and then moved deeper into relational database structure.
+
+---
+
+### SQL Recall
+
+I reviewed:
+
+- `WHERE`
+- `HAVING`
+- `COUNT(*)`
+- `COUNT(column)`
+- `GROUP BY`
+- `ORDER BY`
+- `DISTINCT`
+- `BETWEEN`
+- `AVG()`
+- `SUM()`
+- `LIMIT`
+
+Important recall:
+
+```text
+WHERE
+→ filters individual rows
+→ before grouping / aggregation
+
+HAVING
+→ filters grouped / aggregate results
+→ after aggregation
+```
+
+```text
+COUNT(*)
+→ counts all rows
+
+COUNT(column)
+→ counts non-NULL values in that column
+```
+
+```text
+GROUP BY
+→ creates groups for aggregation
+
+ORDER BY
+→ sorts the result
+```
+
+I also successfully wrote:
+
+```sql
+SELECT city, AVG(sales) AS average_sales
+FROM sales
+WHERE sales > 2000
+GROUP BY city
+HAVING AVG(sales) > 3000
+ORDER BY average_sales DESC;
+```
+
+This strengthened my understanding of the flow:
+
+```text
+WHERE
+↓
+GROUP BY
+↓
+Aggregate calculation
+↓
+HAVING
+↓
+ORDER BY
+```
+
+---
+
+### NULL
+
+`NULL` means:
+
+```text
+no known value
+missing / unavailable value
+```
+
+Important distinction:
+
+```text
+NULL
+≠ 0
+
+NULL
+≠ ''
+
+NULL
+≠ 'NULL'
+```
+
+To find missing values:
+
+```sql
+SELECT name
+FROM sales
+WHERE city IS NULL;
+```
+
+To find rows where the value exists:
+
+```sql
+SELECT name
+FROM sales
+WHERE city IS NOT NULL;
+```
+
+Important connection to `COUNT()`:
+
+```text
+COUNT(*)
+→ counts every row
+
+COUNT(sales)
+→ ignores NULL values in sales
+```
+
+I also practiced counting missing values:
+
+```sql
+SELECT COUNT(*)
+FROM sales
+WHERE city IS NULL;
+```
+
+---
+
+### LIKE
+
+`LIKE` is used for text pattern matching.
+
+Exact match:
+
+```sql
+WHERE city = 'Helsinki'
+```
+
+Pattern match:
+
+```sql
+WHERE name LIKE 'A%'
+```
+
+Important patterns:
+
+```text
+'A%'
+→ starts with A
+
+'%a'
+→ ends with a
+
+'%mi%'
+→ contains mi anywhere
+```
+
+Example:
+
+```sql
+SELECT name
+FROM sales
+WHERE name LIKE 'S%';
+```
+
+This returns names that start with `S`.
+
+---
+
+### Wildcards: % and _
+
+`%` means:
+
+```text
+zero or more characters
+```
+
+`_` means:
+
+```text
+exactly one character
+```
+
+Example:
+
+```sql
+WHERE name LIKE 'M_k_'
+```
+
+This can match:
+
+```text
+Mika
+Mike
+Mako
+```
+
+but not:
+
+```text
+Mikko
+```
+
+because `_` represents exactly one character.
+
+---
+
+### NOT
+
+`NOT` reverses or excludes a condition.
+
+Examples:
+
+```sql
+WHERE city NOT IN ('Helsinki', 'Turku')
+```
+
+means:
+
+```text
+all matching rows except Helsinki and Turku
+```
+
+```sql
+WHERE sales NOT BETWEEN 2000 AND 4000
+```
+
+means:
+
+```text
+sales < 2000
+OR
+sales > 4000
+```
+
+Because `BETWEEN` is inclusive.
+
+```sql
+WHERE name NOT LIKE 'A%'
+```
+
+means:
+
+```text
+name does not start with A
+```
+
+Important distinction:
+
+```sql
+WHERE name NOT LIKE '%A%'
+```
+
+means:
+
+```text
+name does not contain A anywhere
+```
+
+---
+
+### Primary Key
+
+A Primary Key uniquely identifies a row in its own table.
+
+Example:
+
+```text
+customer_id | name
+------------|------
+1           | Amina
+2           | Rafi
+3           | Amina
+```
+
+`name` cannot safely identify the record because names can repeat.
+
+But:
+
+```text
+customer_id
+```
+
+can uniquely identify each row.
+
+Important rules:
+
+```text
+PRIMARY KEY
+→ unique
+→ cannot be NULL
+```
+
+---
+
+### Foreign Key
+
+A Foreign Key is a column that references a key in another table.
+
+Example:
+
+```text
+customers
+
+customer_id | name
+------------|------
+1           | Amina
+2           | Rafi
+```
+
+```text
+orders
+
+order_id | customer_id | amount
+---------|-------------|-------
+101      | 1           | 3200
+102      | 2           | 1400
+103      | 1           | 1800
+```
+
+Here:
+
+```text
+customers.customer_id
+→ Primary Key
+
+orders.customer_id
+→ Foreign Key
+```
+
+The Foreign Key can repeat because one customer can have multiple orders.
+
+Important distinction:
+
+```text
+Primary Key
+→ identifies a row in its own table
+
+Foreign Key
+→ references a related row in another table
+```
+
+---
+
+### JOIN Concept
+
+I started learning how related tables are combined.
+
+Example relationship:
+
+```text
+customers.customer_id
+        ↕
+orders.customer_id
+```
+
+An `INNER JOIN` returns only matching rows.
+
+Example:
+
+```sql
+SELECT orders.order_id, customers.name, orders.amount
+FROM orders
+INNER JOIN customers
+ON orders.customer_id = customers.customer_id;
+```
+
+Important:
+
+```text
+ON
+→ tells SQL which columns should match
+```
+
+I also learned the concept of `LEFT JOIN`.
+
+```text
+INNER JOIN
+→ only matching rows
+
+LEFT JOIN
+→ all rows from the left table
+→ matching rows from the right table
+→ missing right-side match becomes NULL
+```
+
+However, I noticed an important conceptual gap:
+
+> How does SQL know which column is a Primary Key and which one is a Foreign Key?
+
+Because of that question, I paused deeper JOIN learning and went back to understand table schemas and key definitions properly.
+
+---
+
+### LEFT / RIGHT vs Primary / Foreign Key
+
+This was an important distinction.
+
+```text
+LEFT / RIGHT
+→ position of tables inside a query
+
+PRIMARY KEY / FOREIGN KEY
+→ relationship defined in the database schema
+```
+
+A Primary Key does not always need to appear on the right side of a JOIN.
+
+A Foreign Key does not always need to appear on the left side.
+
+The table order can change without changing the key relationship.
+
+---
+
+### Table Schema
+
+A schema is the structure or blueprint of a database table.
+
+It defines things such as:
+
+```text
+table name
+columns
+data types
+constraints
+Primary Keys
+Foreign Keys
+relationships
+```
+
+Example:
+
+```text
+customers
+
+customer_id
+→ integer
+→ Primary Key
+
+name
+→ text
+
+city
+→ text
+```
+
+Important distinction:
+
+```text
+Schema
+→ describes how data should be structured
+
+Data
+→ actual values stored inside that structure
+```
+
+---
+
+### Schema Connection to Python Class
+
+A table schema is conceptually similar to the structural part of a Python class.
+
+```text
+Python                     SQL
+
+Class                      Table schema
+Attribute                  Column
+Object                     Row / record
+Attribute value            Field value
+```
+
+But they are not exactly the same.
+
+A Python class can contain:
+
+```text
+methods
+behavior
+logic
+```
+
+A table schema mainly defines:
+
+```text
+columns
+data types
+constraints
+keys
+relationships
+```
+
+---
+
+### SQL Data Types
+
+I learned three basic SQL data types:
+
+```text
+INT
+→ whole numbers
+
+VARCHAR(...)
+→ text
+
+DECIMAL(...)
+→ decimal numbers
+```
+
+Connection to Python:
+
+```text
+Python              SQL
+
+int                 INT
+str                 VARCHAR
+decimal number      DECIMAL
+```
+
+---
+
+### VARCHAR(n)
+
+Example:
+
+```sql
+name VARCHAR(100)
+```
+
+means:
+
+```text
+name
+→ column name
+
+VARCHAR
+→ text data type
+
+100
+→ maximum number of characters
+```
+
+Important:
+
+```text
+VARCHAR(100)
+```
+
+does not mean the value must contain exactly 100 characters.
+
+It means the maximum allowed length is 100 characters.
+
+Example:
+
+```sql
+city VARCHAR(50)
+```
+
+means the city column can store text up to 50 characters.
+
+---
+
+### DECIMAL(p, s)
+
+Example:
+
+```sql
+price DECIMAL(8, 2)
+```
+
+means:
+
+```text
+8
+→ total number of digits
+
+2
+→ digits after the decimal point
+
+8 - 2 = 6
+→ maximum digits before the decimal point
+```
+
+Example valid value:
+
+```text
+999999.99
+```
+
+Important connection:
+
+```text
+INT
+→ whole numbers
+
+DECIMAL
+→ decimal values
+```
+
+For financial values such as price, salary, cost, and amount, `DECIMAL` is an important data type.
+
+---
+
+### CREATE TABLE
+
+`CREATE TABLE` creates a new table structure.
+
+General structure:
+
+```sql
+CREATE TABLE table_name (
+    column_name data_type,
+    column_name data_type
+);
+```
+
+I successfully created:
+
+```sql
+CREATE TABLE products(
+    product_id INT,
+    product_name VARCHAR(100),
+    price DECIMAL(8, 2)
+);
+```
+
+Important:
+
+```text
+CREATE TABLE
+→ creates structure
+
+It does not automatically insert rows.
+```
+
+---
+
+### PRIMARY KEY Inside CREATE TABLE
+
+I learned how the database actually knows that a column is a Primary Key.
+
+Example:
+
+```sql
+CREATE TABLE products(
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100),
+    price DECIMAL(8, 2)
+);
+```
+
+Here:
+
+```text
+product_id
+→ column name
+
+INT
+→ data type
+
+PRIMARY KEY
+→ constraint / rule
+```
+
+This tells the database that `product_id` uniquely identifies each product.
+
+---
+
+### FOREIGN KEY Inside CREATE TABLE
+
+I then learned how the relationship between tables is actually defined.
+
+Parent table:
+
+```sql
+CREATE TABLE customers(
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+```
+
+Related table:
+
+```sql
+CREATE TABLE orders(
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    amount DECIMAL(8, 2),
+
+    FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+);
+```
+
+Meaning:
+
+```text
+orders.customer_id
+→ Foreign Key
+
+REFERENCES customers(customer_id)
+→ points to customers.customer_id
+```
+
+So the database schema now knows:
+
+```text
+customers.customer_id
+→ Primary Key
+
+orders.customer_id
+→ Foreign Key
+→ references customers.customer_id
+```
+
+This answered my earlier JOIN question.
+
+SQL does not guess Primary Keys and Foreign Keys based on which table appears on the left or right side.
+
+They are defined in the schema.
+
+---
+
+### Referential Integrity
+
+Referential Integrity means:
+
+> A Foreign Key reference should point to a record that actually exists.
+
+বাংলায়:
+
+> যাকে reference করছি, সে যেন সত্যিই parent table-এ exists করে।
+
+Example:
+
+```text
+customers.customer_id
+
+1
+2
+```
+
+This order is valid:
+
+```text
+customer_id = 2
+```
+
+because customer 2 exists.
+
+This is invalid:
+
+```text
+customer_id = 99
+```
+
+because customer 99 does not exist.
+
+Mental model:
+
+```text
+Referential Integrity
+→ Foreign Key reference must remain valid
+```
+
+Important distinction:
+
+```text
+NOT NULL check
+→ is there a value?
+
+Foreign Key check
+→ does that referenced value actually exist?
+```
+
+---
+
+### INSERT INTO
+
+`INSERT INTO` adds actual rows to a table.
+
+General structure:
+
+```sql
+INSERT INTO table_name (column1, column2)
+VALUES (value1, value2);
+```
+
+Example:
+
+```sql
+INSERT INTO customers(customer_id, name)
+VALUES(2, 'Rafi');
+```
+
+Important connection:
+
+```text
+CREATE TABLE
+→ create structure
+
+INSERT INTO
+→ add actual data
+
+SELECT
+→ retrieve data
+```
+
+I also inserted a row containing a valid Foreign Key:
+
+```sql
+INSERT INTO orders(order_id, customer_id, amount)
+VALUES(101, 2, 1400.50);
+```
+
+This is valid because:
+
+```text
+customer_id = 2
+```
+
+already exists in the `customers` table.
+
+---
+
+## 2. What Did I Do Today?
+
+I started with SQL Day 1–2 blank-screen recall.
+
+I successfully recalled:
+
+- `WHERE` vs `HAVING`
+- `COUNT(*)` vs `COUNT(column)`
+- `GROUP BY` vs `ORDER BY`
+- `DISTINCT`
+- `BETWEEN`
+- aggregate functions
+- Top-N queries
+- filtering before aggregation
+
+I successfully wrote:
+
+```sql
+SELECT city, AVG(sales) AS average_sales
+FROM sales
+WHERE sales > 2000
+GROUP BY city
+HAVING AVG(sales) > 3000
+ORDER BY average_sales DESC;
+```
+
+I then learned and practiced:
+
+- `NULL`
+- `IS NULL`
+- `IS NOT NULL`
+- `LIKE`
+- `%`
+- `_`
+- `NOT IN`
+- `NOT BETWEEN`
+- `NOT LIKE`
+- Primary Key
+- Foreign Key
+- basic `INNER JOIN`
+- basic `LEFT JOIN`
+- table schema
+- schema vs data
+- connection between SQL schema and Python classes
+- `INT`
+- `VARCHAR`
+- `DECIMAL`
+- `VARCHAR(n)`
+- `DECIMAL(p, s)`
+- `CREATE TABLE`
+- `PRIMARY KEY` constraint
+- `FOREIGN KEY` constraint
+- `REFERENCES`
+- referential integrity
+- `INSERT INTO`
+
+I successfully created:
+
+```sql
+CREATE TABLE products(
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100),
+    price DECIMAL(8, 2)
+);
+```
+
+I also created a related table:
+
+```sql
+CREATE TABLE orders(
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    amount DECIMAL(8, 2),
+
+    FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+);
+```
+
+I inserted data:
+
+```sql
+INSERT INTO customers(customer_id, name)
+VALUES(2, 'Rafi');
+```
+
+and:
+
+```sql
+INSERT INTO orders(order_id, customer_id, amount)
+VALUES(101, 2, 1400.50);
+```
+
+Most importantly, I connected several concepts into one system:
+
+```text
+Database
+↓
+Table
+↓
+Schema
+↓
+Columns + Data Types
+↓
+Constraints
+↓
+Primary Key
+↓
+Foreign Key
+↓
+Relationship between tables
+↓
+INSERT actual data
+↓
+JOIN related data
+```
+
+---
+
+## 3. Interview Questions & Answers
+
+### What is NULL in SQL?
+
+`NULL` represents a missing, unknown, or unavailable value.
+
+It is not the same as `0`, an empty string, or the text `'NULL'`.
+
+### How do you check for NULL?
+
+Use:
+
+```sql
+IS NULL
+```
+
+or:
+
+```sql
+IS NOT NULL
+```
+
+Example:
+
+```sql
+WHERE city IS NULL
+```
+
+### What is LIKE used for?
+
+`LIKE` is used for text pattern matching.
+
+Example:
+
+```sql
+WHERE name LIKE 'A%'
+```
+
+returns names starting with `A`.
+
+### What does % mean in LIKE?
+
+`%` represents zero or more characters.
+
+### What does _ mean in LIKE?
+
+`_` represents exactly one character.
+
+### What is a Primary Key?
+
+A Primary Key uniquely identifies each row in a table.
+
+It must be unique and cannot be NULL.
+
+### What is a Foreign Key?
+
+A Foreign Key is a column that references a key in another table and helps establish a relationship between tables.
+
+### Can a Foreign Key repeat?
+
+Yes.
+
+For example, several orders can belong to the same customer.
+
+### What is a table schema?
+
+A table schema defines the structure of a table, including columns, data types, constraints, and relationships.
+
+### What is the difference between schema and data?
+
+Schema defines how data should be structured.
+
+Data is the actual information stored inside that structure.
+
+### What is INT?
+
+`INT` is a data type used for whole numbers.
+
+### What is VARCHAR?
+
+`VARCHAR` is a variable-length text data type.
+
+Example:
+
+```sql
+VARCHAR(100)
+```
+
+means the value can contain up to 100 characters.
+
+### What does DECIMAL(8, 2) mean?
+
+It allows up to 8 total digits, with 2 digits after the decimal point.
+
+Therefore, up to 6 digits can appear before the decimal point.
+
+### What does CREATE TABLE do?
+
+`CREATE TABLE` creates a new table structure in a database.
+
+### What does INSERT INTO do?
+
+`INSERT INTO` adds new rows to an existing table.
+
+### What does REFERENCES mean?
+
+`REFERENCES` identifies the table and column that a Foreign Key points to.
+
+Example:
+
+```sql
+FOREIGN KEY (customer_id)
+REFERENCES customers(customer_id)
+```
+
+### What is referential integrity?
+
+Referential integrity means Foreign Key references remain valid.
+
+A child record should not reference a parent record that does not exist.
+
+### What is the difference between NOT NULL and a Foreign Key?
+
+`NOT NULL` checks whether a value exists.
+
+A Foreign Key checks whether the referenced value exists in the related table.
+
+### What is the difference between Primary/Foreign Key and LEFT/RIGHT?
+
+Primary Key and Foreign Key describe the relationship defined in the schema.
+
+LEFT and RIGHT describe table positions inside a query.
+
+### What is an INNER JOIN?
+
+An `INNER JOIN` returns rows that have matching values in both related tables.
+
+### What is a LEFT JOIN?
+
+A `LEFT JOIN` keeps all rows from the left table and adds matching values from the right table.
+
+If there is no right-side match, the right-side values become `NULL`.
+
+---
+
+## 4. Summary — Mistakes & Corrections
+
+### COUNT(column)
+
+My first explanation was:
+
+```text
+COUNT(sales)
+→ counts the sales column
+```
+
+More precise:
+
+```text
+COUNT(sales)
+→ counts non-NULL values in the sales column
+```
+
+---
+
+### NOT LIKE Pattern
+
+I initially interpreted:
+
+```sql
+WHERE name NOT LIKE 'A%'
+```
+
+as:
+
+```text
+name has no A
+```
+
+Correction:
+
+```text
+'A%'
+→ starts with A
+
+NOT LIKE 'A%'
+→ does not start with A
+```
+
+To exclude names containing `A` anywhere:
+
+```sql
+WHERE name NOT LIKE '%A%'
+```
+
+---
+
+### INNER JOIN Syntax
+
+I initially wrote:
+
+```sql
+FROM orders
+INNER JOIN
+ON orders.customer_id = customers.customer_id;
+```
+
+I forgot to specify the table after `INNER JOIN`.
+
+Correct:
+
+```sql
+FROM orders
+INNER JOIN customers
+ON orders.customer_id = customers.customer_id;
+```
+
+---
+
+### Primary Key / Foreign Key vs Left / Right
+
+Initially, it was easy to think:
+
+```text
+Foreign Key
+→ left side
+
+Primary Key
+→ right side
+```
+
+Correction:
+
+This is not a rule.
+
+```text
+LEFT / RIGHT
+→ query position
+
+PRIMARY KEY / FOREIGN KEY
+→ schema relationship
+```
+
+Tables can switch positions without changing which column is the Primary Key or Foreign Key.
+
+---
+
+### CREATE TABLE Column Names
+
+While practicing, I wrote:
+
+```sql
+price_price
+```
+
+instead of:
+
+```sql
+price
+```
+
+and later:
+
+```sql
+name
+```
+
+instead of:
+
+```sql
+product_name
+```
+
+This reminded me that SQL syntax may be correct while the schema can still differ from the requested design.
+
+---
+
+### VARCHAR Length
+
+I initially used:
+
+```sql
+VARCHAR(50)
+```
+
+when the requested schema required:
+
+```sql
+VARCHAR(100)
+```
+
+The number defines the maximum allowed characters.
+
+---
+
+### FOREIGN KEY Syntax
+
+I initially wrote:
+
+```sql
+REFERENCE customers(customer_id)
+```
+
+Correct keyword:
+
+```sql
+REFERENCES customers(customer_id)
+```
+
+---
+
+### Missing Comma in CREATE TABLE
+
+I initially forgot the comma before the table-level Foreign Key constraint.
+
+Incorrect:
+
+```sql
+amount DECIMAL(8, 2)
+
+FOREIGN KEY ...
+```
+
+Correct:
+
+```sql
+amount DECIMAL(8, 2),
+
+FOREIGN KEY ...
+```
+
+---
+
+### Foreign Key vs NULL
+
+I initially thought that because:
+
+```text
+customer_id = 99
+```
+
+is not `NULL`, it might be acceptable.
+
+Correction:
+
+```text
+NOT NULL
+→ checks whether a value exists
+
+FOREIGN KEY
+→ checks whether the referenced value exists
+```
+
+So:
+
+```text
+customer_id = 99
+```
+
+can still be invalid if customer `99` does not exist.
+
+---
+
+### Final Mental Model
+
+```text
+CREATE TABLE
+→ define the structure
+
+Column
+→ named field in the table
+
+Data Type
+→ what type of value the column stores
+
+PRIMARY KEY
+→ uniquely identify a row
+
+FOREIGN KEY
+→ reference a row in another table
+
+REFERENCES
+→ define what the Foreign Key points to
+
+Referential Integrity
+→ keep references valid
+
+INSERT INTO
+→ add actual rows
+
+SELECT
+→ retrieve rows
+
+JOIN
+→ combine related data from multiple tables
+```
+
+The most important lesson today was understanding that relational SQL is not only about writing `SELECT` queries.
+
+The database first has a structure and rules:
+
+```text
+Schema
+↓
+Keys
+↓
+Relationships
+↓
+Data
+↓
+Queries
+```
+
+This foundation will make JOINs much easier to understand when I continue.
